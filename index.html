@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ukázka</title>
+  <style>
+    body { font-family: system-ui, sans-serif; padding: 2rem; }
+    header { margin-bottom: 1rem; }
+    .demo { border: 1px solid #ddd; padding: 1rem; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Ukázka HTML pro GitHub</h1>
+  </header>
+  <main>
+    <section class="demo">
+      <p>Toto je jednoduchá stránka, kterou můžeš upravovat a testovat.</p>
+      <button id="btn">Klikni</button>
+      <p id="out"></p>
+    </section>
+  </main>
+  <script>
+    document.getElementById('btn').addEventListener('click', () => {
+      document.getElementById('out').textContent = 'Ahoj — tlačítko bylo stisknuto v ' + new Date().toLocaleTimeString();
+    });
+  </script>
+</body>
+</html>
