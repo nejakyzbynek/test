@@ -1,15 +1,7 @@
-/* Základní reset a nastavení */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Roboto', sans-serif;
-    color: #333;
-    background-color: #f9f9f9;
-}
+html, body {
+  background-color: #ffffff !important;
+  color: #000000; /* volitelně: černý text pro lepší kontrast */
+  min-height: 100%;
 
 /* Sekce pro obrázek na pozadí */
 .hero-section {
