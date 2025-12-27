@@ -6,15 +6,14 @@
     <title>Fragmenta</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- změněno: použití relativní cesty ke složce static -->
-    <link href="/test/static/css/styles.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light">
-            <div class="container">
-                <a class="navbar-brand" href="/"><i class="bi bi-cup" style="color: gold"></i> FRAGMENTA</a>
-                <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigati[...]
+        <div class="container">
+                <a class="navbar-brand" href="/">FRAGMENTA</a>
+                <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse" id="navbarNav">
@@ -32,23 +31,23 @@
                             <a class="nav-link" href="#tym">Tým</a>
                         </li>
                         <li>
-                            <a class="nav-link" href="#kontakt">Kontakt</a>
+                            <a class="nav-link nav-kontakt" href="#kontakt">Kontakt</a>
                         </li>
                     </ul>
                 </div>
             </div>
-        </nav>
+    </nav>
     <!-- Hero Sekce s obrázkem na pozadí -->
     <div class="hero-section">
         <!-- Navigace přímo v hero sekci -->
-        <p class="textvobr">Restaurátorská dílna a laboratoř <br>pro konzervaci a restaurování keramických materiálů
+        <p class="textvobr">Restaurátorská dílna a laboratoř<br> pro konzervaci a restaurování keramických materiálů
         </p>
     </div>
 
     <!-- Další obsah stránky -->
-    <div class="scroll-container" id="scroll-container">
-        <div id="obsah">
-            <h1 class="velke" id="laborator">Laboratoř</h1>
+    <!-- <div class="scroll-container" id="scroll-container"> -->
+        <div class="obsah">
+            <h1 class="velke" id="laborator">LABORATOŘ</h1>
             <p class="podtitul">Fragmenta je odborná laboratoř specializovaná na konzervaci, restaurování a
                  materiálový průzkum keramických artefaktů.<br>
             <br>
@@ -57,8 +56,11 @@
                 porcelánu, s využitím tradičních a současných restaurátorských technik i
                 vědeckých analytických metod.
             </p>
-        </div>
-        <div id="obsah">
+            <p class="obrazky">
+            <img width="40%" height="40%" src="/static/pictures/laborator/lab1.jpg">
+            <img width="40%" height="40%" src="/static/pictures/laborator/lab2.jpg">
+            </p>
+
             <h1 class="velke" id="sluzby">Služby</h1>
             <p class="podtitul">Nabídka odborných služeb v oblasti:</p>
             <ul class="podtitul">
@@ -75,24 +77,22 @@
             <p class="podtitul">Hlavním zaměřením je dlouhodobé uchování a čitelná prezentace
                 keramického kulturního dědictví v souladu s aktuálními etickými a
                 metodickými standardy památkové péče a vědecké dokumentace.</p>
-        </div>
-        <div id="obsah">
+
             <h1 class="velke" id="prace">Práce</h1>
 
             <h1 class="velke" id="tym">Tým</h1>
-            <p class="podtitul">Fragmenta je tvořena týmem restaurátorů, konzervátorů a odborníků na materiálový průzkum se specializací na keramiku. Spojuje řemeslnou odbornost, vědeck�[...]
+            <p class="podtitul">Fragmenta je tvořena týmem restaurátorů, konzervátorů a odborníků na materiálový průzkum se specializací na keramiku. Spojuje řemeslnou odbornost, vědecký přístup a zkušenosti z terénních i sbírkových projektů.<br>
                 <br>
                 <b>Mgr. Veronika Pluške, DiS.</b><br>
                 <b>Vedoucí laboratoře, restaurátorka keramických materiálů</b><br>
                 <br>
-                Specializuje se na konzervaci a restaurování archeologických nálezů z keramiky a na metodiku rekonstrukce historické keramiky. Má zkušenosti z mezioborových restaurátorských[...]
+                Specializuje se na konzervaci a restaurování archeologických nálezů z keramiky a na metodiku rekonstrukce historické keramiky. Má zkušenosti z mezioborových restaurátorských projektů a výstavních příprav.
                 Je držitelkou povolení k restaurování kulturních památek uděleného Ministerstvem kultury ČR pro uměleckořemeslná díla z keramiky a porcelánu.
                 Absolvovala také praktický kurz tradiční japonské techniky kintsugi v Japonsku, který rozšířil její přístup k etice restaurování i k estetice vizuálních zásahů.<br>
                 <br>
                 Spolupracujeme také s dalšími restaurátory, archeology a analytickými laboratořemi dle potřeb konkrétních projektů.
             </p>
-        </div>
-        <div id="obsah">
+
             <h1 class="velke" id="kontakt">Kontakt</h1>
             <p class="podtitul">
                 Laboratoř Fragmenta<br>
@@ -102,7 +102,7 @@
                 🌐 www.fragmenta-lab.cz<br>
             </p>
         </div>
-    </div>
+    <!-- </div> -->
 
 
 
@@ -123,11 +123,8 @@
 <button id="scrolujnahoru"> <!-- tlacitko scroluj nahoru -->
   <i class="bi bi-arrow-up-short"></i>
 </button>
-<!-- změněno: relativní cesta k JS souborům -->
-<script src="static/js/scrolujnahoru.js"></script>
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-<!-- změněno: relativní cesta k JS souboru -->
-<script src="static/js/navbarscrol.js"></script>
+<script src="{{ url_for('static', filename='js/scrolujnahoru.js') }}"></script> <!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script> <!-- scrolujnahoru JS -->
+<script src="{{ url_for('static', filename='js/navbarscrol.js') }}"></script>
 </body>
 </html>
