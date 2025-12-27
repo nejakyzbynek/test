@@ -9,7 +9,7 @@ html, body {
 /* Sekce pro obrázek na pozadí */
 .hero-section {
     position: relative;
-    background-image: url("/static/pictures/uvod_1.JPG"); /* Opravená cesta k obrázku */
+    background-image: url("/test/static/pictures/uvod_1.JPG"); /* Opravená cesta k obrázku */
     background-size: cover;
     background-position: center;
     z-index: 1;
