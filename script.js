@@ -1,14 +1,46 @@
-const pairs = [
-  {jp: "kirimisu", cz: "cut, slice"},
-  {jp: "okurimasu", cz: "send"},
-  {jp: "agemasu", cz: "give"},
-  {jp: "moraimasu", cz: "receive"},
-  {jp: "kashimasu", cz: "lend"},
-  {jp: "karimasu", cz: "borrow"},
-  {jp: "oshiemasu", cz: "teach"},
-  {jp: "naraimasu", cz: "learn"},
-  {jp: "kakemasu", cz: "make..a phone call.."},
-];
+let correctCount = 0;
+let wrongCount = 0;
+
+const lessons = {
+  lesson7_1: [
+    {jp: "kirimisu", cz: "cut, slice"},
+    {jp: "okurimasu", cz: "send"},
+    {jp: "agemasu", cz: "give"},
+    {jp: "moraimasu", cz: "receive"},
+    {jp: "kashimasu", cz: "lend"},
+    {jp: "karimasu", cz: "borrow"},
+    {jp: "oshiemasu", cz: "teach"},
+    {jp: "naraimasu", cz: "learn"},
+    {jp: "kakemasu", cz: "make..a phone call.."}
+  ],
+
+  lesson7_2: [
+    { jp: "te", cz: "hand, arm" },
+    { jp: "hashi", cz: "chopsticks" },
+    { jp: "supuun", cz: "spoon" },
+    { jp: "naifu", cz: "knife" },
+    { jp: "foku", cz: "fork" },
+    { jp: "hasami", cz: "scissors" }
+  ],
+
+  lesson7_3: [
+    { jp: "hana", cz: "flower" },
+    { jp: "shatsu", cz: "shirt" },
+    { jp: "nimotsu", cz: "luggage" },
+    { jp: "okane", cz: "money" },
+    { jp: "moo", cz: "already" },
+    { jp: "mada", cz: "not yet" },
+    { jp: "kore kara", cz: "from now on, soon" }
+  ]
+};
+
+let currentLesson = "lesson7_1"
+
+function changeLesson(lesson) {
+  currentLesson = lesson;
+  start();
+}
+
 
 let selectedLeft = null;
 
@@ -17,12 +49,25 @@ function shuffle(arr) {
 }
 
 function start() {
+  correctCount = 0;
+  wrongCount = 0;
+  document.getElementById("correctCount").textContent = correctCount;
+  document.getElementById("wrongCount").textContent = wrongCount;
+
   selectedLeft = null;
   document.getElementById("left").innerHTML = "";
   document.getElementById("right").innerHTML = "";
 
+  const MAX_ROWS = 6;
+
+  const selectedPairs = lessons[currentLesson]
+
+  const pairs = shuffle([...selectedPairs]).slice(0, MAX_ROWS);
+
   const leftWords = shuffle([...pairs]);
   const rightWords = shuffle([...pairs]);
+  //const leftWords = shuffle([...pairs]);
+  //const rightWords = shuffle([...pairs]);
 
   leftWords.forEach(p => {
     const d = document.createElement("div");
@@ -44,13 +89,20 @@ function start() {
       if (!selectedLeft) return;
 
       if (selectedLeft.cz === p.cz) {
+        correctCount++;
+        document.getElementById("correctCount").textContent = correctCount;
+        
         d.classList.add("correct");
         document.querySelector(".selected").classList.add("correct");
         document.querySelector(".selected").classList.remove("selected");
         d.onclick = null;
         selectedLeft = null;
       } 
+
       else {
+        wrongCount++;
+        document.getElementById("wrongCount").textContent = wrongCount;
+
         d.classList.add("wrong");
         setTimeout(() => d.classList.remove("wrong"), 1000);
         setTimeout(() => document.querySelector(".selected")?.classList.remove("selected"), 1000);

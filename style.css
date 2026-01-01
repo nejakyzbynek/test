@@ -27,9 +27,9 @@ h1 { text-align: center; }
 }
 
 .word:not(.wrong):not(.correct):hover { background: #eee; }
-.selected { border-color: #4a90e2; }
-.correct { background: #a5e6a5; }
-.wrong { background: #f2a0a0; }
+.selected { border-color: #4a90e2; color: #4a90e2; }
+.correct { background: #a5e6a5; color: #2e972e;}
+.wrong { background: #f2a0a0; color: #a14646; }
 .hidden { visibility: hidden; }
 
 button {
@@ -38,3 +38,16 @@ button {
   padding: 10px 20px;
   font-size: 16px;
 }
+
+#score {
+  text-align: center;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+#lessonSelect {
+  text-align: center;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+

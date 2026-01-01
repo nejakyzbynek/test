@@ -12,6 +12,21 @@
 
 <h1>jp Spoj správná slovíčka 🇨🇿</h1>
 
+<div id="lessonSelect">
+  Lekce:
+  <select onchange="changeLesson(this.value)">
+    <option value="lesson7_1">Lekce 7 – I</option>
+    <option value="lesson7_2">Lekce 7 – II</option>
+    <option value="lesson7_3">Lekce 7 – III</option>
+  </select>
+</div>
+
+
+<div id="score">
+  ✅ Správně: <span id="correctCount">0</span> |
+  ❌ Špatně: <span id="wrongCount">0</span>
+</div>
+
 <div class="game">
   <div class="column" id="left"></div>
   <div class="column" id="right"></div>
@@ -22,5 +37,4 @@
 <script src="script.js"></script>
 
 </body>
-
 </html>
