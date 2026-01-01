@@ -9,7 +9,7 @@ h1 { text-align: center; }
 .game {
   display: flex;
   justify-content: center;
-  gap: 60px;
+  gap: 10px;
 }
 
 .column {
@@ -50,4 +50,5 @@ button {
   font-size: 18px;
   margin-bottom: 20px;
 }
+
 
