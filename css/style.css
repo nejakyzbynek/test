@@ -1,0 +1,120 @@
+
+body {
+  font-family: sans-serif;
+  background: #ffffff;
+  
+}
+h1 { text-align: center; }
+
+.game {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.column {
+  width: 200px;
+}
+
+.word {
+  background: white;
+  border: 2px solid #ccc;
+  padding: 12px;
+  margin: 8px 0;
+  cursor: pointer;
+  text-align: center;
+  border-radius: 8px;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.word:not(.wrong):not(.correct):hover { background: #a9cdeb;}
+.selected { border-color: #4a90e2; color: #4a90e2; }
+.correct { background: #a5e6a5; color: #2e972e;}
+.wrong { background: #f2a0a0; color: #a14646; }
+.hidden { visibility: hidden; }
+
+.button_novekolo {
+  display: block;
+  background: white;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  margin: 30px auto;
+  padding: 10px 20px;
+  font-size: 16px;
+}
+.button_novekolo:hover {
+  background: #c0392b;
+}
+#nextBtn {
+  color: black;
+  background: white;
+  border: 2px solid #ccc;
+  padding: 12px;
+  margin: 8px 0;
+  cursor: pointer;
+  text-align: center;
+  border-radius: 8px;
+  
+}
+#nextBtn:hover {
+  background: #c0392b;
+  color: white;  
+}
+
+#score {
+  text-align: center;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+#lessonSelect {
+  text-align: center;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+#steps {
+  display: flex;
+  justify-content: center;   /* ← střed řádku */
+  align-items: center;
+  gap: 12px;                 /* mezery mezi tlačítky */
+  margin: 20px 0;
+}
+
+#steps button {
+  background: white;
+  border: 2px solid #ccc;
+  padding: 12px;
+  margin: 8px 0;
+  cursor: pointer;
+  text-align: center;
+  border-radius: 8px;
+}
+
+#steps button.active-step {
+  
+  background: #4caf50;
+  color: white;
+  font-weight: bold;
+}
+
+.jp-word {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.romaji {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.hiragana {
+  font-size: 14px;
+  color: #666;
+}
+

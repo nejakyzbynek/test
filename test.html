@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
+
+  <title>JP–CZ Test | Nihongo</title>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="main.html">NIHONGO</a>
+    <div class="collapse navbar-collapse show">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="main.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link active" href="test.html">Learn</a></li>
+        <li class="nav-item"><a class="nav-link" href="match.html">Match</a></li>
+        <li class="nav-item"><a class="nav-link" href="sentens.html">Sentence</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-3">
+
+  <h1 class="text-center">JP–CZ Flashcard Test</h1>
+
+  <div class="text-center mb-3">
+    Lekce:
+    <select onchange="changeLesson(this.value)">
+      <option value="lesson7_1">Lekce 7 – I</option>
+      <option value="lesson7_2">Lekce 7 – II</option>
+      <option value="lesson7_3">Lekce 7 – III</option>
+      <option value="lesson7_4">Lekce 7 – IV</option>
+    </select>
+  </div>
+
+  <div class="text-center">
+    <div class="word h3" id="jpWord"></div>
+    <div class="game h4 mt-2" id="czTranslation"></div>
+  </div>
+
+  <div class="text-center mt-3">
+    <button id="nextBtn" class="btn btn-primary" style="display:none;">
+      Další
+    </button>
+  </div>
+
+</div>
+
+<script>
+/* ===== DATA ===== */
+const lessons = {
+  lesson7_1: [
+    { jp: "kirimasu", cz: "cut, slice" },
+    { jp: "okurimasu", cz: "send" },
+    { jp: "agemasu", cz: "give" },
+    { jp: "moraimasu", cz: "receive" }
+  ],
+  lesson7_2: [
+    { jp: "kashimasu", cz: "lend" },
+    { jp: "karimasu", cz: "borrow" },
+    { jp: "oshiemasu", cz: "teach" },
+    { jp: "naraimasu", cz: "learn" },
+    { jp: "kakemasu", cz: "make a phone call" }
+  ],
+  lesson7_3: [
+    { jp: "te", cz: "hand, arm" },
+    { jp: "hashi", cz: "chopsticks" },
+    { jp: "supuun", cz: "spoon" },
+    { jp: "naifu", cz: "knife" },
+    { jp: "foku", cz: "fork" },
+    { jp: "hasami", cz: "scissors" }
+  ],
+  lesson7_4: [
+    { jp: "hana", cz: "flower" },
+    { jp: "shatsu", cz: "shirt" },
+    { jp: "nimotsu", cz: "luggage" },
+    { jp: "okane", cz: "money" },
+    { jp: "moo", cz: "already" },
+    { jp: "mada", cz: "not yet" },
+    { jp: "kore kara", cz: "from now on, soon" }
+  ]
+};
+
+/* ===== STATE ===== */
+let currentLessonKey = "lesson7_1";
+let lesson = lessons[currentLessonKey];
+let currentIndex = 0;
+
+/* ===== ELEMENTS ===== */
+const jpWord = document.getElementById("jpWord");
+const czTranslation = document.getElementById("czTranslation");
+const nextBtn = document.getElementById("nextBtn");
+
+/* ===== FUNCTIONS ===== */
+function changeLesson(key) {
+  currentLessonKey = key;
+  lesson = lessons[key];
+  currentIndex = 0;
+  showWord(0);
+}
+
+function showWord(index) {
+  jpWord.textContent = lesson[index].jp;
+  czTranslation.textContent = lesson[index].cz;
+  czTranslation.style.display = "none";
+  nextBtn.style.display = "none";
+}
+
+/* ===== EVENTS ===== */
+jpWord.onclick = () => {
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(jpWord.textContent);
+  u.lang = "ja-JP";
+  speechSynthesis.speak(u);
+
+  czTranslation.style.display = "block";
+  nextBtn.style.display = "inline-block";
+};
+
+nextBtn.onclick = () => {
+  currentIndex++;
+  if (currentIndex >= lesson.length) currentIndex = 0;
+  showWord(currentIndex);
+};
+
+/* ===== START ===== */
+showWord(0);
+</script>
+
+</body>
+</html>

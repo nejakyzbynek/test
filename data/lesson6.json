@@ -1,0 +1,45 @@
+{
+    "title": "Lesson 7",
+    "steps": [
+        [
+            {"jp": "tabemasu", "hiragana": "たべます", "cz": "eat"},
+            {"jp": "nomimasu", "hiragana": "のみます", "cz": "drink"},
+            {"jp": "suimasu", "hiragana": "すいます", "cz": "smoke"},
+            {"jp": "mimasu", "hiragana": "みます", "cz": "see, watch"},
+            {"jp": "kikimasu", "hiragana": "ききます", "cz": "listen, hear"}
+        ],
+        [
+            {"jp": "yomimasu", "hiragana": "よみます", "cz": "read"},
+            {"jp": "kakimasu", "hiragana": "かきます", "cz": "write"},
+            {"jp": "kaimasu", "hiragana": "かいます", "cz": "buy"},
+            {"jp": "torimasu", "hiragana": "とります", "cz": "take (a photo)"},
+            {"jp": "shimasu", "hiragana": "します", "cz": "do, play"},
+            {"jp": "aimasu", "hiragana": "あいます", "cz": "meet (friends)"}
+        ],
+        [
+            {"jp": "gohan", "hiragana":"ごはん", "cz": "rice, meal"},
+            {"jp": "asagohan", "hiragana":"あさごはん", "cz": "braekfast"},
+            {"jp": "hirugohan", "hiragana":"ひるごはん", "cz": "lunch"},
+            {"jp": "bangohan", "hiragana":"ばんごはん", "cz": "dinner"}
+        ],
+        [
+            {"jp": "pan", "hiragana":"パン", "cz": "bread"},
+            {"jp": "tamago", "hiragana":"たまご", "cz": "egg"},
+            {"jp": "niku", "hiragana":"にく", "cz": "meat"},
+            {"jp": "sakana", "hiragana":"さかな", "cz": "fish"},
+            {"jp": "yasai", "hiragana":"やさい", "cz": "vegetables"}
+        ],
+        [
+            {"jp": "mizu", "hiragana": "みず", "cz": "water"},
+            {"jp": "ocha", "hiragana": "おちゃ", "cz": "tea"},
+            {"jp": "koocha", "hiragana": "こうちゃ", "cz": "black tea"},
+            {"jp": "koohii", "hiragana": "コーヒー", "cz": "coffee"},
+            {"jp": "gyuunyuu", "hiragana": "ぎゅうにゅう", "cz": "milk"},
+            {"jp": "juusu", "hiragana": "ジュース", "cz": "juice"},
+            {"jp": "koodo", "hiragana": "コーラ", "cz": "cola"},
+            {"jp": "osake", "hiragana": "おさけ", "cz": "sake"},
+            {"jp": "biiiru", "hiragana": "ビール", "cz": "beer"}
+
+        ]
+    ]
+}

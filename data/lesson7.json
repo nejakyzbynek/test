@@ -1,0 +1,35 @@
+{
+    "title": "Lesson 7",
+    "steps": [
+        [
+            {"jp": "kirimasu", "hiragana": "きります", "cz": "cut, slice"},
+            {"jp": "okurimasu", "hiragana": "おくります", "cz": "send"},
+            {"jp": "agemasu", "hiragana": "あげます", "cz": "give"},
+            {"jp": "moraimasu", "hiragana": "もらいます", "cz": "receive"}
+        ],
+        [
+            {"jp": "kashimasu", "hiragana": "かします", "cz": "lend"},
+            {"jp": "karimasu", "hiragana": "かります", "cz": "borrow"},
+            {"jp": "oshiemasu", "hiragana": "おしえます", "cz": "teach"},
+            {"jp": "naraimasu", "hiragana": "ならいます", "cz": "learn"},
+            {"jp": "kakemasu", "hiragana": "かけます", "cz": "make..a phone call.."}
+        ],
+        [
+            {"jp": "te", "hiragana":"て", "cz": "hand, arm"},
+            {"jp": "hashi", "hiragana":"はし", "cz": "chopsticks"},
+            {"jp": "supuun", "hiragana":"スプーン", "cz": "spoon"},
+            {"jp": "naifu", "hiragana":"ナイフ", "cz": "knife"},
+            {"jp": "foku", "hiragana":"フォーク", "cz": "fork"},
+            {"jp": "hasami", "hiragana":"ハサミ", "cz": "scissors"}
+        ],
+        [
+            {"jp": "hana", "hiragana": "はな", "cz": "flower"},
+            {"jp": "shatsu", "hiragana": "シャツ", "cz": "shirt"},
+            {"jp": "nimotsu", "hiragana": "にもつ", "cz": "luggage"},
+            {"jp": "okane", "hiragana": "おかね", "cz": "money"},
+            {"jp": "moo", "hiragana": "もう", "cz": "already"},
+            {"jp": "mada", "hiragana": "まだ", "cz": "not yet"},
+            {"jp": "korekara", "hiragana": "これから", "cz": "from now on, soon"}
+        ]
+    ]
+}
