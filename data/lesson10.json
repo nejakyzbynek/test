@@ -1,0 +1,58 @@
+{
+    "title": "Lesson 9",
+    "steps": [
+        [
+            {"jp": "arimasu", "hiragana": "あります", "cz": "exist, be (for inanimate objects)"},
+            {"jp": "imasu", "hiragana": "", "cz": "exist, be (for animate objects)"},
+            {"jp": "iroiro[na]", "hiragana": "", "cz": "various"},
+            {"jp": "otoko no hito", "hiragana": "おとこのひと", "cz": "man"},
+            {"jp": "onna no hito", "hiragana": "おんなのひと", "cz": "woman"},
+            {"jp": "otoko no ko", "hiragana": "おとこのこ", "cz": "boy"},
+            {"jp": "onna no ko", "hiragana": "おんなのこ", "cz": "girl"}
+        ],
+        [
+            {"jp": "inu", "hiragana": "いぬ", "cz": "dog"},
+            {"jp": "neko", "hiragana": "ねこ", "cz": "cat"},
+            {"jp": "panda", "hiragana": "パンダ", "cz": "panda"},
+            {"jp": "zō", "hiragana": "ぞう", "cz": "elephant"},
+            {"jp": "ki", "hiragana": "き", "cz": "tree, wood"},
+            {"jp": "hana", "hiragana": "はな", "cz": "flower"},
+            {"jp": "mono", "hiragana": "もの", "cz": "thing"},
+            {"jp": "denchi", "hiragana": "でんち", "cz": "battery"},
+            {"jp": "hako", "hiragana": "はこ", "cz": "box"},
+            {"jp": "suitchi", "hiragana": "スイッチ", "cz": "switch"},
+            {"jp": "reizōko", "hiragana": "れいぞうこ", "cz": "refrigerator"},
+            {"jp": "tēburu", "hiragana": "テーブル", "cz": "table"},
+            {"jp": "beddo", "hiragana": "ベッド", "cz": "bed"},
+            {"jp": "tana", "hiragana": "たな", "cz": "shelf"},
+            {"jp": "doa", "hiragana": "ドア", "cz": "door"},
+            {"jp": "mado", "hiragana": "まど", "cz": "window"},
+            {"jp": "posuto", "hiragana": "ポスト", "cz": "mailbox"},
+            {"jp": "biru", "hiragana": "ビル", "cz": "building"},
+            {"jp": "kōen", "hiragana": "こうえん", "cz": "park"},
+            {"jp": "kissaten", "hiragana": "きっさてん", "cz": "cafe shop"},
+            {"jp": "-ya", "hiragana": "~や", "cz": "~shop (suffix)"},
+            {"jp": "noriba", "hiragana": "のりば", "cz": "fic place to coutch a bus, taxi, etc."},
+            {"jp": "ken", "hiragana": "けん", "cz": "prefecture"},
+            {"jp": "ue", "hiragana": "うえ", "cz": "above, on"},
+            {"jp": "shita", "hiragana": "した", "cz": "below, under"},
+            {"jp": "mae", "hiragana": "まえ", "cz": "in front of"},
+            {"jp": "ushiro", "hiragana": "うしろ", "cz": "behind"},
+            {"jp": "migi", "hiragana": "みぎ", "cz": "right"},
+            {"jp": "hidari", "hiragana": "ひだり", "cz": "left"},
+            {"jp": "naka", "hiragana": "なか", "cz": "inside, in"},
+            {"jp": "soto", "hiragana": "そと", "cz": "outside"},
+            {"jp": "tonari", "hiragana": "となり", "cz": "next to"},
+            {"jp": "chikaku", "hiragana": "ちかく", "cz": "near"},
+            {"jp": "aida", "hiragana": "あいだ", "cz": "between"},
+            {"jp": "~ya~[nado]", "hiragana": "~や~など", "cz": "~and so on (used to list examples)"}
+        ],
+        [
+            {"jp": "[Dōmo] sumimasen", "hiragana": "[どうも]すみません", "cz": "Thank you"},
+            {"jp": "nanpurā", "hiragana": "なんぷら", "cz": "number (used for counting things)"},
+            {"jp": "kōnā", "hiragana": "こうな", "cz": "corner, section"},
+            {"jp": "ichiban shita", "hiragana": "いちばんした", "cz": "the bottom"},
+            {"jp": "Ajia-sutoa", "hiragana": "あじあすとあ", "cz": "a fictional store that sells Asian products"}
+        ]
+    ]
+}

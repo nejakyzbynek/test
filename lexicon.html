@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/Nihongo/css/style.css">
+  <title>Lexicon | Nihongo</title>
+  <style>
+    .lexicon-entry {
+      border: 1px solid #ddd;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 6px;
+      background: #f9f9f9;
+    }
+    .lexicon-entry:hover {
+      background: #f0f8ff;
+      border-color: #4a90e2;
+    }
+    .jp-text {
+      font-size: 1.3rem;
+      color: #d9534f;
+      font-weight: bold;
+    }
+    .romaji-text {
+      font-size: 1.1rem;
+      color: #333;
+      font-family: monospace;
+    }
+    .cz-text {
+      color: #555;
+      font-style: italic;
+    }
+    .lesson-badge {
+      display: inline-block;
+      background: #5cb85c;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      margin: 4px 2px;
+    }
+    .search-box {
+      margin: 20px 0;
+    }
+    .no-results {
+      text-align: center;
+      padding: 30px;
+      color: #999;
+    }
+    .results-count {
+      color: #666;
+      font-size: 0.95rem;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="main.html">NIHONGO</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="main.html">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="match.html">Match</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="lexicon.html">Lexicon</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-4">
+  <h1 class="text-center mb-4">📖 Japanese Lexicon</h1>
+  
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <div class="search-box">
+        <input 
+          type="text" 
+          id="searchInput" 
+          class="form-control form-control-lg" 
+          placeholder="Search by romaji or English translation..."
+          autocomplete="off"
+        >
+        <div class="results-count">
+          <span id="resultCount">0</span> results
+        </div>
+      </div>
+
+      <div id="results"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+// Store all vocabulary with lesson info
+let allVocabulary = [];
+
+// Load all JSON files
+async function loadAllLessons() {
+  const lessonFiles = ['lesson6.json', 'lesson7.json', 'lesson9.json',  'lesson10.json', 'hiragana.json', 'tellingtime.json'];
+  
+  for (const file of lessonFiles) {
+    try {
+      const response = await fetch(`data/${file}`);
+      const data = await response.json();
+      const lessonName = data.title || file.replace('.json', '');
+      
+      // Extract steps and add lesson info
+      data.steps.forEach((step, stepIndex) => {
+        step.forEach(word => {
+          allVocabulary.push({
+            jp: word.jp,
+            hiragana: word.hiragana,
+            cz: word.cz,
+            lesson: lessonName,
+            step: stepIndex + 1,
+            file: file
+          });
+        });
+      });
+    } catch (err) {
+      console.error(`Error loading ${file}:`, err);
+    }
+  }
+  
+  // Sort by romaji for better UX
+  allVocabulary.sort((a, b) => a.jp.localeCompare(b.jp));
+  
+  console.log(`Loaded ${allVocabulary.length} vocabulary items`);
+  console.log('Sample items:', allVocabulary.slice(0, 5));
+
+}
+
+// Remove diacritical marks for flexible searching
+function removeDiacritics(text) {
+  return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
+// Search function
+function search() {
+  const query = document.getElementById('searchInput').value.toLowerCase().trim();
+  const resultsDiv = document.getElementById('results');
+  const resultCountSpan = document.getElementById('resultCount');
+  
+  if (!query) {
+    resultsDiv.innerHTML = '';
+    resultCountSpan.textContent = '0';
+    return;
+  }
+  
+  const normalizedQuery = removeDiacritics(query);
+  
+  // Filter vocabulary based on search query
+  const filtered = allVocabulary.filter(word => {
+    return (
+      removeDiacritics(word.jp.toLowerCase()).includes(normalizedQuery) ||
+      word.hiragana.includes(query) ||
+      removeDiacritics(word.cz.toLowerCase()).includes(normalizedQuery)
+    );
+  });
+  
+  resultCountSpan.textContent = filtered.length;
+  
+  if (filtered.length === 0) {
+    resultsDiv.innerHTML = '<div class="no-results">No results found. Try searching by romaji or English translation.</div>';
+    return;
+  }
+  
+  // Group by lesson for better organization
+  const groupedByLesson = {};
+  filtered.forEach(word => {
+    const key = word.lesson;
+    if (!groupedByLesson[key]) {
+      groupedByLesson[key] = [];
+    }
+    groupedByLesson[key].push(word);
+  });
+  
+  // Build HTML
+  let html = '';
+  Object.keys(groupedByLesson).forEach(lesson => {
+    html += `<div class="mt-4"><h5>${lesson}</h5>`;
+    
+    groupedByLesson[lesson].forEach(word => {
+      html += `
+        <div class="lexicon-entry">
+          <div>
+            <div class="jp-text">${word.hiragana}</div>
+            <div class="romaji-text">${word.jp || '(no romaji)'}</div>
+            <div class="cz-text">${word.cz}</div>
+          </div>
+        </div>
+      `;
+    });
+    
+    html += '</div>';
+  });
+  
+  resultsDiv.innerHTML = html;
+}
+
+// Event listeners
+document.getElementById('searchInput').addEventListener('input', search);
+document.getElementById('searchInput').addEventListener('keyup', search);
+
+// Load lessons on page load
+window.addEventListener('DOMContentLoaded', loadAllLessons);
+</script>
+
+</body>
+</html>

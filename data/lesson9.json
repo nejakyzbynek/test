@@ -1,0 +1,81 @@
+{
+    "title": "Lesson 9",
+    "steps": [
+        [
+            {"jp": "wakarimasu", "hiragana": "わかります", "cz": "understand"},
+            {"jp": "arimasu", "hiragana": "あります", "cz": "have"},
+            {"jp": "suki[na]", "hiragana": "すきな", "cz": "like (adjective form)"},
+            {"jp": "kirai[na]", "hiragana": "きらいな", "cz": "dislike (adjective form)"},
+            {"jp": "jouzu[na]", "hiragana": "じょうずな", "cz": "good at (adjective form)"},
+            {"jp": "heta[na]", "hiragana": "へたな", "cz": "bad at (adjective form)"}
+        ],
+        [
+            {"jp": "nomimono", "hiragana": "のみもの", "cz": "drinks"},
+            {"jp": "ryōri", "hiragana": "りょうり", "cz": "cooking, dish (cooked food), (~o shimsu: to cook)"}
+        ],
+        [
+            {"jp": "supōtsu", "hiragana": "すぽつ ", "cz": "sports (~o shimasu: to play sports)"},
+            {"jp": "yakyū", "hiragana": "やきゅう", "cz": "baseball (~o shimasu: to play baseball)"},
+            {"jp": "dansu", "hiragana": "てにす", "cz": "tennis (~o shimasu: to play tennis)"},
+            {"jp": "ryokō", "hiragana": "りょこう", "cz": "trip, tour (~o shimasu: to go on a trip)"}
+        ],
+        [
+            {"jp": "ongaku", "hiragana": "おんがく", "cz": "music"},
+            {"jp": "uta", "hiragana": "うた", "cz": "song"},
+            {"jp": "kurashikku", "hiragana": "くらしっく", "cz": "classical music"},
+            {"jp": "jazu", "hiragana": "じゃず", "cz": "jazz"},
+            {"jp": "konsāto", "hiragana": "こんさと", "cz": "concert"},
+            {"jp": "karaoke", "hiragana": "からおけ", "cz": "karaoke"},
+            {"jp": "kabuki", "hiragana": "かぶき", "cz": "kabuki (traditional Japanese theater)"}
+        ],
+        [
+            {"jp": "e", "hiragana": "え", "cz": "painting, picture"},
+            {"jp": "ji", "hiragana": "じ", "cz": "character, letter"},
+            {"jp": "kanji", "hiragana": "かんじ", "cz": "kanji (Chinese characters)"},
+            {"jp": "hiragana", "hiragana": "ひらがな", "cz": "hiragana (Japanese syllabary)"},
+            {"jp": "katakana", "hiragana": "かたかな", "cz": "katakana (Japanese syllabary)"},
+            {"jp": "rōmaji", "hiragana": "ろーまじ", "cz": "romaji (Latin characters used for Japanese)"}
+        ],
+        [
+            {"jp": "komakai okane", "hiragana": "こまかいおかね", "cz": "small change (money)"},
+            {"jp": "chiketto", "hiragana": "ちけっと", "cz": "ticket"}
+        ],
+        [
+            {"jp": "jikan", "hiragana": "じかん", "cz": "time"},
+            {"jp": "yōji", "hiragana": "ようじ", "cz": "something to do, errands"},
+            {"jp": "yakusoku", "hiragana": "やくそく", "cz": "appointment, promise (~o shimasu: to make an appointment, promise)"},
+            {"jp": "arubaito", "hiragana": "あるばいと", "cz": "part-time job (~o shimasu: to work part-time)"}
+        ],
+        [
+            {"jp": "go-shujin", "hiragana": "ごしゅじん", "cz": "(someone else's) husband"},
+            {"jp": "otto/shujin", "hiragana": "おっと/しゅじん", "cz": "(my) husband"},
+            {"jp": "okusan", "hiragana": "おくさん", "cz": "(someone else's) wife"},
+            {"jp": "tsuma/kanai", "hiragana": "つま", "cz": "(my) wife"},
+            {"jp": "kodomo", "hiragana": "こども", "cz": "(my) child"}
+        ],
+        [
+            {"jp": "yoku", "hiragana": "よく", "cz": "well, much"},
+            {"jp": "daitai", "hiragana": "だいたい", "cz": "mostly, roughly"},
+            {"jp": "takusan", "hiragana": "たくさん", "cz": "many, much"},
+            {"jp": "sukoshi", "hiragana": "すこし", "cz": "a little, a few"},
+            {"jp": "zenzen", "hiragana": "ぜんぜん", "cz": "not at all (used with negative verbs)"},
+            {"jp": "hayaku", "hiragana": "はやく", "cz": "early, quickly, fast"}
+        ],
+        [
+            {"jp": "~ kara", "hiragana": "~ から", "cz": "because"},
+            {"jp": "doshite", "hiragana": "どうして", "cz": "why"}
+        ],
+        [
+            {"jp": "Kashite kudasai", "hiragana": "かしてください", "cz": "Please lend me..."},
+            {"jp": "Ii desu yo", "hiragana": "いいですよ", "cz": "Sure. / Certainly. / That's fine."},
+            {"jp": "zannen desu", "hiragana": "ざんねんです", "cz": "I'm sorry (used when declining a request)"}
+        ],
+        [
+            {"jp": "ā", "hiragana": "あー", "cz": "ah, oh"},
+            {"jp": "issho ni ikaga desu ka", "hiragana": "いっしょにいかがですか", "cz": "Wont you join me? (used when inviting someone to do something together)"},
+            {"jp": "[~wa] chotto...", "hiragana": "[~わ] ちょっと...", "cz": "I'm sorry, but... (used when declining an invitation)"},
+            {"jp": "dame desu ka", "hiragana": "だめですか", "cz": "So you can't? (used when asking for a reason after declining an invitation)"},
+            {"jp": "Mata kondo onegaishimasu", "hiragana": "またこんどおねがいします", "cz": "Please ask me again next time"}
+        ]
+    ]
+}
