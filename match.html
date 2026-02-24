@@ -53,9 +53,14 @@
       </div>
     </div>
   </div>
-  <div class="row">
+  <div class="row"> 
     <div class="col">
-      <div id="steps"></div>
+      <div id="stepContainer">
+        Step:
+        <select id="stepSelect" onchange="changeStep(this.value)">
+          <!-- options will be populated by script.js -->
+        </select>
+      </div>
     </div>
   </div>
   <div class="row">
@@ -80,10 +85,11 @@
 </button>
 
 
-<script src="js/script.js"></script>
+<script src="/Nihongo/js/script.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
 
 
 
