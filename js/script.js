@@ -15,6 +15,7 @@ let lessonData = [];
 // Vykreslení tlačítek pro steps lekce
 function renderStepButtons() {
   const stepsDiv = document.getElementById("steps");
+  if (!stepsDiv) return; // no container, dropdown is used instead
   stepsDiv.innerHTML = "";
 
   lessonJson.steps.forEach((step, index) => {
@@ -35,6 +36,39 @@ function renderStepButtons() {
   });
 }
 
+// ===== new step selector logic =====
+
+/**
+ * Populate the <select> dropdown with step options for the active lesson.
+ */
+function renderStepSelect() {
+  const select = document.getElementById("stepSelect");
+  if (!select || !lessonJson) return;
+
+  select.innerHTML = "";
+  lessonJson.steps.forEach((step, index) => {
+    const opt = document.createElement("option");
+    opt.value = index;
+    opt.textContent = `Step ${index + 1}`;
+    if (index === currentStep) opt.selected = true;
+    select.appendChild(opt);
+  });
+}
+
+/**
+ * Handler called when the dropdown value changes.
+ * @param {string|number} value - index of the selected step
+ */
+function changeStep(value) {
+  const idx = Number(value);
+  if (isNaN(idx)) return;
+  currentStep = idx;
+  localStorage.setItem(`${currentLesson}_step`, currentStep);
+  loadLesson();
+}
+
+// ===== end new step selector logic =====
+
 // Načítání lekce z externího JSON souboru
 function loadLesson() {
   fetch(`data/${currentLesson}.json`)
@@ -48,7 +82,8 @@ function loadLesson() {
 
       lessonData = lessonJson.steps[currentStep];
 
-      renderStepButtons(); // ✅ tady
+      // renderStepButtons(); // no longer needed, dropdown handles step selection
+      renderStepSelect(); // populate dropdown when lesson loads
       start();
     })
     .catch(err => {
