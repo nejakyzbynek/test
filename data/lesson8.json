@@ -1,0 +1,84 @@
+{
+    "title": "Lesson 8",
+    "steps": 
+    [
+        [
+            {"jp": "hansamu", "hiragana": "ハンサム", "cz": "handsome"},
+            {"jp": "kirei", "hiragana": "きれい", "cz": "beautiful; clean"},
+            {"jp": "shizuka", "hiragana": "しずか", "cz": "quiet"},
+            {"jp": "nigiyaka", "hiragana": "にぎやか", "cz": "lively"},
+            {"jp": "yūmei", "hiragana": "ゆうめい", "cz": "famous"},
+            {"jp": "shinsetsu", "hiragana": "しんせつ", "cz": "kind; helpful"},
+            {"jp": "genki", "hiragana": "げんき", "cz": "healthy; energetic"},
+            {"jp": "hima", "hiragana": "ひま", "cz": "free (time)"},
+            {"jp": "benri", "hiragana": "べんり", "cz": "convenient"},
+            {"jp": "suteki", "hiragana": "すてき", "cz": "nice; wonderful"}
+        ],
+        [
+            {"jp": "ōkii", "hiragana": "おおきい", "cz": "big; large"},
+            {"jp": "chiisai", "hiragana": "ちいさい", "cz": "small; little"},
+            {"jp": "atarashii", "hiragana": "あたらしい", "cz": "new"},
+            {"jp": "furui", "hiragana": "ふるい", "cz": "old (not age)"},
+            {"jp": "ii (yoi)", "hiragana": "いい", "cz": "good"},
+            {"jp": "warui", "hiragana": "わるい", "cz": "bad"},
+            {"jp": "atsui", "hiragana": "あつい", "cz": "hot"},
+            {"jp": "samui", "hiragana": "さむい", "cz": "cold (weather)"},
+            {"jp": "tsumetai", "hiragana": "つめたい", "cz": "cold (to touch)"}
+        ],
+        [   
+            {"jp": "muzukashii", "hiragana": "むずかしい", "cz": "difficult"},
+            {"jp": "yasashii", "hiragana": "やさしい", "cz": "easy; kind"},
+            {"jp": "takai", "hiragana": "たかい", "cz": "expensive; tall; high"},
+            {"jp": "yasui", "hiragana": "やすい", "cz": "cheap"},
+            {"jp": "hikui", "hiragana": "ひくい", "cz": "low"},
+            {"jp": "omoshiroi", "hiragana": "おもしろい", "cz": "interesting"},
+            {"jp": "oishii", "hiragana": "おいしい", "cz": "delicious"},
+            {"jp": "isogashii", "hiragana": "いそがしい", "cz": "busy"},
+            {"jp": "tanoshii", "hiragana": "たのしい", "cz": "enjoyable"}
+        ],  
+        [      
+            {"jp": "shiroi", "hiragana": "しろい", "cz": "white"},
+            {"jp": "kuroi", "hiragana": "くろい", "cz": "black"},
+            {"jp": "akai", "hiragana": "あかい", "cz": "red"},
+            {"jp": "aoi", "hiragana": "あおい", "cz": "blue"},
+
+            {"jp": "sakura", "hiragana": "さくら", "cz": "cherry blossom"},
+            {"jp": "yama", "hiragana": "やま", "cz": "mountain"},
+            {"jp": "machi", "hiragana": "まち", "cz": "town; city"},
+            {"jp": "tabemono", "hiragana": "たべもの", "cz": "food"}
+        ],
+        [
+            {"jp": "tokoro", "hiragana": "ところ", "cz": "place"},
+            {"jp": "ryō", "hiragana": "りょう", "cz": "dormitory"},
+            {"jp": "resutoran", "hiragana": "レストラン", "cz": "restaurant"},
+            {"jp": "seikatsu", "hiragana": "せいかつ", "cz": "life"},
+            {"jp": "oshigoto", "hiragana": "おしごと", "cz": "work; job"},
+
+            {"jp": "dō", "hiragana": "どう", "cz": "how"},
+            {"jp": "donna", "hiragana": "どんな", "cz": "what kind of"},
+            {"jp": "totemo", "hiragana": "とても", "cz": "very"},
+            {"jp": "amari", "hiragana": "あまり", "cz": "not so (with negatives)"},
+            {"jp": "soshite", "hiragana": "そして", "cz": "and"},
+            {"jp": "~ga,~", "hiragana": "が", "cz": "~,but~"}
+        ],
+        [
+
+            {"jp": "O-genki desu ka", "hiragana": "おげんきですか", "cz": "How are you?"},
+            {"jp": "Sō desu ne", "hiragana": "そうですね", "cz": "Well, let me see"},
+
+            {"jp": "[~] mō ippai ikaga desu ka", "hiragana": "もういっぱい いかがですか", "cz": "Won’t you have another cup?"},
+            {"jp": "{~] Iie, kekkō desu", "hiragana": "いいえ、けっこうです", "cz": "No, thank you"},
+            {"jp": "Mō ~ desu ne", "hiragana": "もう～ですね", "cz": "It’s already ~, isn’t it?"},
+            {"jp": "Sorosoro shitsurei shimasu", "hiragana": "そろそろ しつれいします", "cz": "It’s time I was going"},
+            {"jp": "Iie", "hiragana": "いいえ", "cz": "Not at all"},
+            {"jp": "Mata irasshatte kudasai", "hiragana": "また いらっしゃって ください", "cz": "Please come again"}
+        ],
+        [
+            {"jp": "Shanhai", "hiragana": "シャンハイ", "cz": "Shanghai"},
+            {"jp": "Kinkakuji", "hiragana": "きんかくじ", "cz": "Kinkakuji Temple"},
+            {"jp": "Nara kōen", "hiragana": "ならこうえん", "cz": "Nara Park"},
+            {"jp": "Fujisan", "hiragana": "ふじさん", "cz": "Mt. Fuji"},
+            {"jp": "Shichi-nin no samurai", "hiragana": "しちにんの さむらい", "cz": "The Seven Samurai"}
+        ]
+    ]
+}
