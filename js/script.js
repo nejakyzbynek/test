@@ -173,11 +173,11 @@ function start() {
   document.querySelector(".selected").classList.remove("selected");
   d.onclick = null;
   selectedLeft = null;
-
-  speechSynthesis.cancel();
-  const utterance = new SpeechSynthesisUtterance(jpWord);
-  utterance.lang = "ja-JP";
-  speechSynthesis.speak(utterance);
+//❌ Vypnul jsem cteni
+  //speechSynthesis.cancel();
+  //const utterance = new SpeechSynthesisUtterance(jpWord);
+  //utterance.lang = "ja-JP";
+  //speechSynthesis.speak(utterance);
 
  
 }
@@ -199,6 +199,7 @@ function start() {
 }
 
 loadLesson();
+
 
 
 
