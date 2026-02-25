@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">  
   <link rel="stylesheet" href="css/style.css">
   <title>Lexicon | Nihongo</title>
   <style>
@@ -59,25 +59,25 @@
 <body>
 
 <nav class="navbar navbar-expand-md navbar-light bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="main.html">NIHONGO</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" href="main.html">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="match.html">Match</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" href="lexicon.html">Lexicon</a>
-        </li>
-      </ul>
-    </div>
-  </div>
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/main.html">NIHONGO</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="main.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="match.html">Match</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="lexicon.html">Lexicon</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 </nav>
 
 <div class="container mt-4">
@@ -86,13 +86,34 @@
   <div class="row">
     <div class="col-md-8 offset-md-2">
       <div class="search-box">
-        <input 
-          type="text" 
-          id="searchInput" 
-          class="form-control form-control-lg" 
-          placeholder="Search by romaji or English translation..."
-          autocomplete="off"
-        >
+        <div class="input-group">
+          <input 
+            type="text" 
+            id="searchInput" 
+            class="form-control form-control-lg" 
+            placeholder="Search by romaji or English translation..."
+            autocomplete="off"
+          >
+          <button class="btn btn-outline-secondary" type="button" id="clearSearch" title="Clear search">
+            &times;
+          </button>
+        </div>
+
+        <div class="filter-options mt-3">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="filter" id="filterBoth" value="both" checked>
+            <label class="form-check-label" for="filterBoth">Both</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="filter" id="filterJP" value="jp">
+            <label class="form-check-label" for="filterJP">Japanese only</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="filter" id="filterCZ" value="cz">
+            <label class="form-check-label" for="filterCZ">English only</label>
+          </div>
+        </div>
+
         <div class="results-count">
           <span id="resultCount">0</span> results
         </div>
@@ -103,15 +124,21 @@
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 // Store all vocabulary with lesson info
 let allVocabulary = [];
 
 // Load all JSON files
 async function loadAllLessons() {
-  const lessonFiles = ['lesson6.json', 'lesson7.json', 'lesson8.json', 'lesson9.json',  'lesson10.json', 'hiragana.json', 'tellingtime.json'];
+  const lessonFiles = ['lesson5.json', 
+                       'lesson6.json', 
+                       'lesson7.json', 
+                       'lesson8.json', 
+                       'lesson9.json',  
+                       'lesson10.json', 
+                       'hiragana.json', 
+                       'tellingtime.json'];
   
   for (const file of lessonFiles) {
     try {
@@ -155,6 +182,7 @@ function search() {
   const query = document.getElementById('searchInput').value.toLowerCase().trim();
   const resultsDiv = document.getElementById('results');
   const resultCountSpan = document.getElementById('resultCount');
+  const filter = document.querySelector('input[name="filter"]:checked').value;
   
   if (!query) {
     resultsDiv.innerHTML = '';
@@ -164,13 +192,20 @@ function search() {
   
   const normalizedQuery = removeDiacritics(query);
   
-  // Filter vocabulary based on search query
+  // Filter vocabulary based on search query and selected filter
   const filtered = allVocabulary.filter(word => {
-    return (
-      removeDiacritics(word.jp.toLowerCase()).includes(normalizedQuery) ||
-      word.hiragana.includes(query) ||
-      removeDiacritics(word.cz.toLowerCase()).includes(normalizedQuery)
-    );
+    const matchesJP = removeDiacritics(word.jp.toLowerCase()).includes(normalizedQuery) ||
+                      word.hiragana.includes(query);
+    const matchesCZ = removeDiacritics(word.cz.toLowerCase()).includes(normalizedQuery);
+
+    if (filter === 'jp') {
+      return matchesJP;
+    }
+    if (filter === 'cz') {
+      return matchesCZ;
+    }
+    // both
+    return matchesJP || matchesCZ;
   });
   
   resultCountSpan.textContent = filtered.length;
@@ -214,8 +249,18 @@ function search() {
 }
 
 // Event listeners
-document.getElementById('searchInput').addEventListener('input', search);
-document.getElementById('searchInput').addEventListener('keyup', search);
+const searchInput = document.getElementById('searchInput');
+searchInput.addEventListener('input', search);
+searchInput.addEventListener('keyup', search);
+
+// clear button functionality
+const clearBtn = document.getElementById('clearSearch');
+clearBtn.addEventListener('click', () => {
+  searchInput.value = '';
+  document.getElementById('results').innerHTML = '';
+  document.getElementById('resultCount').textContent = '0';
+  searchInput.focus();
+});
 
 // Load lessons on page load
 window.addEventListener('DOMContentLoaded', loadAllLessons);
@@ -223,4 +268,3 @@ window.addEventListener('DOMContentLoaded', loadAllLessons);
 
 </body>
 </html>
-
