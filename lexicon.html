@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/Nihongo/css/style.css">
+  <link rel="stylesheet" href="css/style.css">
   <title>Lexicon | Nihongo</title>
   <style>
     .lexicon-entry {
@@ -111,7 +111,7 @@ let allVocabulary = [];
 
 // Load all JSON files
 async function loadAllLessons() {
-  const lessonFiles = ['lesson6.json', 'lesson7.json', 'lesson9.json',  'lesson10.json', 'hiragana.json', 'tellingtime.json'];
+  const lessonFiles = ['lesson6.json', 'lesson7.json', 'lesson8.json', 'lesson9.json',  'lesson10.json', 'hiragana.json', 'tellingtime.json'];
   
   for (const file of lessonFiles) {
     try {
@@ -223,3 +223,4 @@ window.addEventListener('DOMContentLoaded', loadAllLessons);
 
 </body>
 </html>
+
