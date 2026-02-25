@@ -1,0 +1,87 @@
+{
+    "title": "Lesson 5",
+    "steps": [
+        [
+            {"jp": "ikimasu", "hiragana": "いきます", "cz": "go"},
+            {"jp": "kimasu", "hiragana": "きます", "cz": "come"},
+            {"jp": "kaerimasu", "hiragana": "かえります", "cz": "go home; return"},
+
+            {"jp": "gakkō", "hiragana": "がっこう", "cz": "school"},
+            {"jp": "sūpā", "hiragana": "スーパー", "cz": "supermarket"},
+            {"jp": "eki", "hiragana": "えき", "cz": "station"}
+        ],
+        [
+
+            {"jp": "hikōki", "hiragana": "ひこうき", "cz": "airplane"},
+            {"jp": "fune", "hiragana": "ふね", "cz": "ship"},
+            {"jp": "densha", "hiragana": "でんしゃ", "cz": "train"},
+            {"jp": "chikatetsu", "hiragana": "ちかてつ", "cz": "subway"},
+            {"jp": "shinkansen", "hiragana": "しんかんせん", "cz": "Shinkansen"},
+            {"jp": "basu", "hiragana": "バス", "cz": "bus"},
+            {"jp": "takushī", "hiragana": "タクシー", "cz": "taxi"},
+            {"jp": "jitensha", "hiragana": "じてんしゃ", "cz": "bicycle"},
+            {"jp": "aruite", "hiragana": "あるいて", "cz": "on foot"}
+        ],
+        [
+
+            {"jp": "hito", "hiragana": "ひと", "cz": "person; people"},
+            {"jp": "tomodachi", "hiragana": "ともだち", "cz": "friend"},
+            {"jp": "kare", "hiragana": "かれ", "cz": "he; boyfriend"},
+            {"jp": "kanojo", "hiragana": "かのじょ", "cz": "she; girlfriend"},
+            {"jp": "kazoku", "hiragana": "かぞく", "cz": "family"},
+            {"jp": "hitori de", "hiragana": "ひとりで", "cz": "alone"}
+        ],
+        [
+            {"jp": "senshū", "hiragana": "せんしゅう", "cz": "last week"},
+            {"jp": "konshū", "hiragana": "こんしゅう", "cz": "this week"},
+            {"jp": "raishū", "hiragana": "らいしゅう", "cz": "next week"},
+            {"jp": "sengetsu", "hiragana": "せんげつ", "cz": "last month"},
+            {"jp": "kongetsu", "hiragana": "こんげつ", "cz": "this month"},
+            {"jp": "raigetsu", "hiragana": "らいげつ", "cz": "next month"},
+            {"jp": "kyonen", "hiragana": "きょねん", "cz": "last year"},
+            {"jp": "kotoshi", "hiragana": "ことし", "cz": "this year"},
+            {"jp": "rainen", "hiragana": "らいねん", "cz": "next year"}
+        ],
+        [
+            {"jp": "-nen", "hiragana": "ねん", "cz": "-year"},
+            {"jp": "nan-nen", "hiragana": "なんねん", "cz": "what year"},
+            {"jp": "-gatsu", "hiragana": "がつ", "cz": "-month"},
+            {"jp": "nan-gatsu", "hiragana": "なんがつ", "cz": "what month"}
+        ],
+        [
+            {"jp": "tsuitachi", "hiragana": "ついたち", "cz": "first day of month"},
+            {"jp": "futsuka", "hiragana": "ふつか", "cz": "second; two days"},
+            {"jp": "mikka", "hiragana": "みっか", "cz": "third; three days"},
+            {"jp": "yokka", "hiragana": "よっか", "cz": "fourth; four days"},
+            {"jp": "itsuka", "hiragana": "いつか", "cz": "fifth; five days"},
+            {"jp": "muika", "hiragana": "むいか", "cz": "sixth; six days"},
+            {"jp": "nanoka", "hiragana": "なのか", "cz": "seventh; seven days"},
+            {"jp": "yōka", "hiragana": "ようか", "cz": "eighth; eight days"},
+            {"jp": "kokonoka", "hiragana": "ここのか", "cz": "ninth; nine days"},
+            {"jp": "tōka", "hiragana": "とおか", "cz": "tenth; ten days"},
+            {"jp": "jū yokka", "hiragana": "じゅうよっか", "cz": "fourteenth; fourteen days"},
+            {"jp": "hatsuka", "hiragana": "はつか", "cz": "twentieth; twenty days"},
+            {"jp": "ni-jū yokka", "hiragana": "にじゅうよっか", "cz": "twenty-fourth; twenty-four days"},
+            {"jp": "-nichi", "hiragana": "にち", "cz": "-day of month"},
+            {"jp": "nan-nichi", "hiragana": "なんにち", "cz": "which day; how many days"},
+
+            {"jp": "itsu", "hiragana": "いつ", "cz": "when"},
+            {"jp": "tanjōbi", "hiragana": "たんじょうび", "cz": "birthday"}
+        ],
+        [
+            {"jp": "Sō desu ne", "hiragana": "そうですね", "cz": "Yes, it is"},
+            {"jp": "Dōmo arigatō gozaimashita", "hiragana": "どうも ありがとうございました", "cz": "Thank you very much"},
+            {"jp": "Dō itashimashite", "hiragana": "どう いたしまして", "cz": "You're welcome"},
+
+            {"jp": "-bansen", "hiragana": "ばんせん", "cz": "platform number"},
+            {"jp": "tsugi no", "hiragana": "つぎの", "cz": "next"},
+            {"jp": "futsū", "hiragana": "ふつう", "cz": "local (train)"},
+            {"jp": "kyūkō", "hiragana": "きゅうこう", "cz": "rapid"},
+            {"jp": "tokkyū", "hiragana": "とっきゅう", "cz": "express"},
+
+            {"jp": "Kōshien", "hiragana": "こうしえん", "cz": "Koshien"},
+            {"jp": "Ōsakajō", "hiragana": "おおさかじょう", "cz": "Osaka Castle"}
+
+        ]
+    ]
+}
