@@ -186,7 +186,7 @@
     border-radius:8px;
     padding:14px 16px;
     display:grid;
-    grid-template-columns:auto 1fr auto;
+    grid-template-columns:auto 1fr auto auto;
     align-items:center;
     gap:14px;
     margin-bottom:10px;
@@ -228,6 +228,20 @@
     color:var(--muted);
     text-align:right;
     white-space:nowrap;
+  }
+  .del-btn{
+    background:transparent;
+    border:none;
+    color:var(--muted);
+    font-size:16px;
+    line-height:1;
+    padding:4px 6px;
+    cursor:pointer;
+    border-radius:5px;
+  }
+  .del-btn:hover, .del-btn:active{
+    color:var(--danger);
+    background:rgba(196,99,75,0.12);
   }
   .empty{
     text-align:center;
@@ -598,6 +612,7 @@
         <span class="tag ${tagClass}">${r.typ}</span>
         <span class="name">${escapeHtml(r.projekt)}</span>
         <span class="time">${time}</span>
+        <button class="del-btn" data-id="${escapeHtml(r.id)}" title="Smazat záznam">✕</button>
       </div>`;
     }).join('');
   }
@@ -708,6 +723,25 @@
       btnOut.disabled = false;
     }
   }
+
+  todayList.addEventListener('click', async (e) => {
+    const btn = e.target.closest('.del-btn');
+    if(!btn) return;
+    const id = btn.dataset.id;
+    if(!confirm('Smazat tento záznam?')) return;
+    btn.disabled = true;
+    try{
+      await deleteRecordApi(id);
+      const records = await loadRecords();
+      renderToday(records);
+      renderSummary(records);
+      refreshProjectSuggestions(records);
+      setStatus('Záznam smazán.', '');
+    }catch(e){
+      setStatus('Smazání se nezdařilo, zkus to znovu.', '');
+      btn.disabled = false;
+    }
+  });
 
   btnIn.addEventListener('click', () => punch('Příchod'));
   btnOut.addEventListener('click', () => punch('Odchod'));
