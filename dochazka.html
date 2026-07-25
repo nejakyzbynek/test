@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Docházka na stavbách</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#1B1917;
+    --panel:#262320;
+    --panel-2:#2E2A26;
+    --line:#3C3730;
+    --cream:#F3EDE2;
+    --muted:#948C7D;
+    --amber:#E8A33D;
+    --amber-dim:#3A2E18;
+    --teal:#4E96A0;
+    --teal-dim:#173235;
+    --danger:#C4634B;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--cream);
+    font-family:'IBM Plex Mono',monospace;
+    min-height:100vh;
+    padding:24px 16px 60px;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .wrap{max-width:560px;margin:0 auto;}
+
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    font-size:11px;
+    color:var(--muted);
+    text-align:center;
+    margin-bottom:6px;
+  }
+  h1{
+    font-family:'Oswald',sans-serif;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.02em;
+    text-align:center;
+    font-size:26px;
+    margin:0 0 20px;
+    color:var(--cream);
+  }
+
+  .clock{
+    text-align:center;
+    font-family:'Oswald',sans-serif;
+    font-weight:600;
+    font-size:56px;
+    letter-spacing:.03em;
+    color:var(--amber);
+    line-height:1;
+    margin-bottom:2px;
+    font-variant-numeric:tabular-nums;
+  }
+  .date{
+    text-align:center;
+    color:var(--muted);
+    font-size:13px;
+    letter-spacing:.06em;
+    margin-bottom:26px;
+    text-transform:uppercase;
+  }
+
+  .panel{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:20px;
+    margin-bottom:18px;
+  }
+
+  .active-project{
+    display:none;
+    text-align:center;
+    font-size:12px;
+    color:var(--amber);
+    background:var(--amber-dim);
+    border-radius:6px;
+    padding:8px 10px;
+    margin-bottom:14px;
+    letter-spacing:.04em;
+  }
+  .active-project.show{display:block;}
+
+  label{
+    display:block;
+    font-size:11px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:8px;
+  }
+  input[type=text]{
+    width:100%;
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:14px 12px;
+    color:var(--cream);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:16px;
+    outline:none;
+  }
+  input[type=text]:focus{border-color:var(--amber);}
+
+  .btn-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-top:16px;
+  }
+  button{
+    font-family:'Oswald',sans-serif;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    font-size:17px;
+    border:none;
+    border-radius:8px;
+    padding:20px 8px;
+    cursor:pointer;
+    transition:transform .08s ease, filter .15s ease;
+  }
+  button:active{transform:scale(.97);}
+  .btn-in{ background:var(--amber); color:#1B1917; }
+  .btn-out{ background:var(--teal); color:#0F1F21; }
+  button:disabled{opacity:.5;cursor:not-allowed;}
+
+  .status{
+    text-align:center;
+    font-size:13px;
+    color:var(--muted);
+    margin-top:14px;
+    min-height:16px;
+    letter-spacing:.02em;
+  }
+  .status.ok{color:var(--amber);}
+  .status.out{color:var(--teal);}
+
+  .section-title{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin:30px 0 12px;
+    gap:10px;
+  }
+  .section-title h2{
+    font-family:'Oswald',sans-serif;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    font-size:15px;
+    color:var(--muted);
+    margin:0;
+  }
+  .export-btn{
+    background:transparent;
+    border:1px solid var(--line);
+    color:var(--cream);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    text-transform:none;
+    letter-spacing:0;
+    font-weight:500;
+    padding:8px 14px;
+    border-radius:6px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .export-btn:hover{border-color:var(--amber);}
+
+  .ticket-list{ display:flex; flex-direction:column; gap:0; }
+  .ticket{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:14px 16px;
+    display:grid;
+    grid-template-columns:auto 1fr auto;
+    align-items:center;
+    gap:14px;
+    margin-bottom:10px;
+    position:relative;
+  }
+  .ticket::before, .ticket::after{
+    content:"";
+    position:absolute;
+    top:50%;
+    width:10px;height:10px;
+    background:var(--bg);
+    border:1px solid var(--line);
+    border-radius:50%;
+    transform:translate(-50%,-50%);
+  }
+  .ticket::before{ left:-1px; }
+  .ticket::after{ right:-1px; transform:translate(50%,-50%); }
+  .tag{
+    font-family:'Oswald',sans-serif;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    padding:5px 9px;
+    border-radius:4px;
+    white-space:nowrap;
+  }
+  .tag.in{background:var(--amber-dim);color:var(--amber);}
+  .tag.out{background:var(--teal-dim);color:var(--teal);}
+  .ticket .name{
+    font-size:14px;
+    color:var(--cream);
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .ticket .time{
+    font-size:14px;
+    color:var(--muted);
+    text-align:right;
+    white-space:nowrap;
+  }
+  .empty{
+    text-align:center;
+    color:var(--muted);
+    font-size:13px;
+    padding:30px 10px;
+    border:1px dashed var(--line);
+    border-radius:8px;
+  }
+
+  table.summary{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13px;
+  }
+  table.summary th{
+    text-align:left;
+    color:var(--muted);
+    font-size:10.5px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    font-weight:500;
+    padding:0 8px 10px;
+    border-bottom:1px solid var(--line);
+  }
+  table.summary td{
+    padding:9px 8px;
+    border-bottom:1px solid var(--line);
+    color:var(--cream);
+  }
+  table.summary tr:last-child td{border-bottom:none;}
+  table.summary td.hours{ color:var(--amber); text-align:right; font-family:'IBM Plex Mono',monospace; }
+  table.summary td.proj{ color:var(--muted); }
+
+  .qr-panel{ text-align:center; }
+  .qr-panel canvas, .qr-panel img{
+    background:#fff;
+    padding:10px;
+    border-radius:8px;
+    margin:10px auto 4px;
+  }
+  .qr-hint{
+    font-size:11.5px;
+    color:var(--muted);
+    line-height:1.5;
+  }
+  .qr-generator{
+    display:flex;
+    gap:8px;
+    margin-top:6px;
+  }
+  .qr-generator input{ flex:1; }
+  .qr-generator button{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    text-transform:none;
+    letter-spacing:0;
+    font-weight:500;
+    padding:0 16px;
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    color:var(--cream);
+    border-radius:6px;
+    cursor:pointer;
+  }
+  #projectQrResult{ margin-top:16px; display:none; }
+  #projectQrResult.show{ display:block; }
+  .dl-link{
+    display:inline-block;
+    margin-top:6px;
+    font-size:11.5px;
+    text-decoration:none;
+    border-bottom:1px solid currentColor;
+  }
+
+  .qr-pair{
+    display:flex;
+    gap:12px;
+  }
+  .qr-card{
+    flex:1;
+    border-radius:10px;
+    padding:14px 10px 16px;
+  }
+  .qr-card.in{ background:var(--amber-dim); border:1px solid var(--amber); }
+  .qr-card.out{ background:var(--teal-dim); border:1px solid var(--teal); }
+  .qr-card-label{
+    font-family:'Oswald',sans-serif;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    font-size:13px;
+    font-weight:600;
+  }
+  .qr-card.in .qr-card-label{ color:var(--amber); }
+  .qr-card.out .qr-card-label{ color:var(--teal); }
+  .qr-card.in .dl-link{ color:var(--amber); }
+  .qr-card.out .dl-link{ color:var(--teal); }
+  .qr-card canvas, .qr-card img{ margin:8px auto 2px; padding:8px; }
+
+  /* auto-confirm banner after scanning an action QR */
+  .auto-confirm{
+    display:none;
+    text-align:center;
+    border-radius:10px;
+    padding:20px 16px;
+    margin-bottom:18px;
+  }
+  .auto-confirm.show{ display:block; }
+  .auto-confirm.in{ background:var(--amber-dim); border:1px solid var(--amber); }
+  .auto-confirm.out{ background:var(--teal-dim); border:1px solid var(--teal); }
+  .auto-confirm .big{
+    font-family:'Oswald',sans-serif;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    font-size:20px;
+    margin-bottom:4px;
+  }
+  .auto-confirm.in .big{ color:var(--amber); }
+  .auto-confirm.out .big{ color:var(--teal); }
+  .auto-confirm .detail{
+    font-size:13px;
+    color:var(--cream);
+    margin-bottom:12px;
+  }
+  .undo-btn{
+    background:transparent;
+    border:1px solid var(--line);
+    color:var(--muted);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    text-transform:none;
+    letter-spacing:0;
+    font-weight:500;
+    padding:8px 16px;
+    border-radius:6px;
+    cursor:pointer;
+  }
+  .undo-btn:hover{ color:var(--danger); border-color:var(--danger); }
+
+  .footer-note{
+    text-align:center;
+    font-size:11px;
+    color:var(--muted);
+    margin-top:26px;
+    line-height:1.6;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">Osobní docházka</div>
+  <h1>Píchačky na stavbě</h1>
+
+  <div class="clock" id="clock">--:--:--</div>
+  <div class="date" id="dateLine">–</div>
+
+  <div class="auto-confirm" id="autoConfirm">
+    <div class="big" id="autoConfirmTitle"></div>
+    <div class="detail" id="autoConfirmDetail"></div>
+    <button class="undo-btn" id="undoBtn">Zrušit tento záznam</button>
+  </div>
+
+  <div class="panel">
+    <div class="active-project" id="activeProjectBanner"></div>
+    <label for="projekt">Projekt / stavba</label>
+    <input type="text" id="projekt" list="projekty" placeholder="Např. Rekonstrukce Vinohrady" autocomplete="off">
+    <datalist id="projekty"></datalist>
+
+    <div class="btn-row">
+      <button class="btn-in" id="btnIn">Příchod</button>
+      <button class="btn-out" id="btnOut">Odchod</button>
+    </div>
+    <div class="status" id="status"></div>
+  </div>
+
+  <div class="section-title">
+    <h2>Dnešní záznamy</h2>
+    <button class="export-btn" id="exportBtn">Export CSV ⤓</button>
+  </div>
+  <div class="ticket-list" id="todayList">
+    <div class="empty">Zatím žádné záznamy pro dnešek.</div>
+  </div>
+
+  <div class="section-title">
+    <h2>Odpracované hodiny</h2>
+  </div>
+  <div class="panel" id="summaryPanel">
+    <div class="empty">Zatím nejsou žádná data.</div>
+  </div>
+
+  <div class="section-title">
+    <h2>Nastavení · živá synchronizace</h2>
+  </div>
+  <div class="panel">
+    <label for="apiUrl">Adresa API (Google Apps Script)</label>
+    <input type="text" id="apiUrl" placeholder="https://script.google.com/macros/s/…/exec" autocomplete="off">
+    <div class="btn-row" style="grid-template-columns:1fr;">
+      <button class="btn-in" id="saveApiUrl" style="padding:14px;">Uložit</button>
+    </div>
+    <div class="status" id="apiStatus"></div>
+    <div class="qr-hint" style="margin-top:10px;">
+      Toto se nastavuje jednou na každém zařízení (mobil i počítač zvlášť).
+      Návod na vytvoření API je v souboru AppsScript_kod.gs.
+    </div>
+  </div>
+
+  <div class="section-title">
+    <h2>QR kódy pro projekt</h2>
+  </div>
+  <div class="panel qr-panel">
+    <div class="qr-generator">
+      <input type="text" id="qrProjectInput" placeholder="Název projektu / stavby">
+      <button id="genProjectQr">Vytvořit</button>
+    </div>
+
+    <div id="projectQrResult">
+      <div class="qr-pair">
+        <div class="qr-card in">
+          <div class="qr-card-label">Příchod</div>
+          <div id="qrInCanvas"></div>
+          <a class="dl-link" id="dlIn" href="#" download>Stáhnout PNG</a>
+        </div>
+        <div class="qr-card out">
+          <div class="qr-card-label">Odchod</div>
+          <div id="qrOutCanvas"></div>
+          <a class="dl-link" id="dlOut" href="#" download>Stáhnout PNG</a>
+        </div>
+      </div>
+      <div class="qr-hint" style="margin-top:12px;">Vytiskni oba kódy a nalep je na stavbu — naskenováním se záznam uloží rovnou, bez dalšího klikání.</div>
+    </div>
+  </div>
+
+  <div class="section-title">
+    <h2>Obecný přístup</h2>
+  </div>
+  <div class="panel qr-panel">
+    <div id="qrcode"></div>
+    <div class="qr-hint">Otevře nástroj bez konkrétní akce — projekt i příchod/odchod zvolíš ručně nahoře.</div>
+  </div>
+
+  <div class="footer-note">
+    Data se ukládají do sdíleného Google Sheetu — vidíš je živě<br>
+    z mobilu i počítače. Adresu API je potřeba nastavit na každém<br>
+    zařízení zvlášť (jednorázově), viz sekce Nastavení výše.
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+(function(){
+  const statusEl = document.getElementById('status');
+  const projektInput = document.getElementById('projekt');
+  const projektyList = document.getElementById('projekty');
+  const todayList = document.getElementById('todayList');
+  const summaryPanel = document.getElementById('summaryPanel');
+  const btnIn = document.getElementById('btnIn');
+  const btnOut = document.getElementById('btnOut');
+  const exportBtn = document.getElementById('exportBtn');
+  const activeProjectBanner = document.getElementById('activeProjectBanner');
+
+  const RECORDS_KEY = 'dochazka_records_cache';
+  const API_URL_KEY = 'dochazka_api_url';
+
+  function pad(n){ return n.toString().padStart(2,'0'); }
+  function updateClock(){
+    const d = new Date();
+    document.getElementById('clock').textContent =
+      `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+    const dny = ['Neděle','Pondělí','Úterý','Středa','Čtvrtek','Pátek','Sobota'];
+    document.getElementById('dateLine').textContent =
+      `${dny[d.getDay()]} · ${pad(d.getDate())}.${pad(d.getMonth()+1)}.${d.getFullYear()}`;
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  // ---- Sdílené API (Google Sheets přes Apps Script) ----
+  function getApiUrl(){
+    return (localStorage.getItem(API_URL_KEY) || '').trim();
+  }
+  function setApiUrl(url){
+    localStorage.setItem(API_URL_KEY, url.trim());
+  }
+
+  // Poslední úspěšně načtená data si držíme jako záložní cache pro okamžité vykreslení
+  // (a pro případ dočasného výpadku připojení), ale zdroj pravdy je vždy vzdálený Sheet.
+  function cacheRecords(records){
+    try{ localStorage.setItem(RECORDS_KEY, JSON.stringify(records)); }catch(e){}
+  }
+  function readCache(){
+    try{ const raw = localStorage.getItem(RECORDS_KEY); return raw ? JSON.parse(raw) : []; }
+    catch(e){ return []; }
+  }
+
+  async function loadRecords(){
+    const url = getApiUrl();
+    if(!url){
+      return readCache();
+    }
+    try{
+      const res = await fetch(url, { method: 'GET' });
+      const data = await res.json();
+      if(Array.isArray(data)){
+        cacheRecords(data);
+        return data;
+      }
+      return readCache();
+    }catch(e){
+      setStatus('Nelze se připojit k API, zobrazuji poslední známá data.', '');
+      return readCache();
+    }
+  }
+
+  async function addRecordApi(record){
+    const url = getApiUrl();
+    if(!url) throw new Error('Adresa API není nastavena.');
+    // text/plain zabraňuje CORS preflight requestu, který Apps Script neumí obsloužit
+    await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'add', ...record })
+    });
+  }
+
+  async function deleteRecordApi(id){
+    const url = getApiUrl();
+    if(!url) return;
+    await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'delete', id })
+    });
+  }
+
+  function setStatus(msg, cls){
+    statusEl.textContent = msg;
+    statusEl.className = 'status' + (cls ? ' ' + cls : '');
+  }
+
+  function isSameDay(iso, ref){
+    const d = new Date(iso);
+    const r = ref || new Date();
+    return d.getFullYear()===r.getFullYear() && d.getMonth()===r.getMonth() && d.getDate()===r.getDate();
+  }
+
+  function escapeHtml(str){
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function renderToday(records){
+    const today = records
+      .filter(r => isSameDay(r.timestamp))
+      .sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+    if(today.length === 0){
+      todayList.innerHTML = '<div class="empty">Zatím žádné záznamy pro dnešek.</div>';
+      return;
+    }
+    todayList.innerHTML = today.map(r => {
+      const d = new Date(r.timestamp);
+      const time = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+      const tagClass = r.typ === 'Příchod' ? 'in' : 'out';
+      return `<div class="ticket">
+        <span class="tag ${tagClass}">${r.typ}</span>
+        <span class="name">${escapeHtml(r.projekt)}</span>
+        <span class="time">${time}</span>
+      </div>`;
+    }).join('');
+  }
+
+  // Spočítá odpracované hodiny: seskupí podle dne + projektu, spáruje Příchod->Odchod chronologicky
+  function computeSummary(records){
+    const byDayProject = {};
+    const sorted = [...records].sort((a,b) => new Date(a.timestamp) - new Date(b.timestamp));
+
+    const openPairs = {}; // key: den|projekt -> timestamp posledního příchodu
+
+    sorted.forEach(r => {
+      const d = new Date(r.timestamp);
+      const dayKey = `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+      const key = dayKey + '|' + r.projekt;
+
+      if(r.typ === 'Příchod'){
+        openPairs[key] = r.timestamp;
+      } else if(r.typ === 'Odchod'){
+        const start = openPairs[key];
+        if(start){
+          const ms = new Date(r.timestamp) - new Date(start);
+          if(!byDayProject[key]) byDayProject[key] = { dayKey, projekt: r.projekt, ms: 0 };
+          byDayProject[key].ms += ms;
+          delete openPairs[key];
+        }
+      }
+    });
+
+    return Object.values(byDayProject).sort((a,b) => b.dayKey.localeCompare(a.dayKey));
+  }
+
+  function formatHours(ms){
+    const totalMin = Math.round(ms / 60000);
+    const h = Math.floor(totalMin / 60);
+    const m = totalMin % 60;
+    return `${h}:${pad(m)}`;
+  }
+
+  function renderSummary(records){
+    const summary = computeSummary(records);
+    if(summary.length === 0){
+      summaryPanel.innerHTML = '<div class="empty">Zatím nejsou žádná data.</div>';
+      return;
+    }
+    const rows = summary.map(s => {
+      const [y,mo,da] = s.dayKey.split('-');
+      return `<tr>
+        <td>${da}.${mo}.${y}</td>
+        <td class="proj">${escapeHtml(s.projekt)}</td>
+        <td class="hours">${formatHours(s.ms)}</td>
+      </tr>`;
+    }).join('');
+    summaryPanel.innerHTML = `<table class="summary">
+      <thead><tr><th>Datum</th><th>Projekt</th><th>Hodiny</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+  }
+
+  async function refresh(){
+    const records = await loadRecords();
+    renderToday(records);
+    renderSummary(records);
+    refreshProjectSuggestions(records);
+    return records;
+  }
+
+  function refreshProjectSuggestions(records){
+    const projects = [...new Set(records.map(r => r.projekt))].sort();
+    projektyList.innerHTML = projects.map(p => `<option value="${escapeHtml(p)}">`).join('');
+  }
+
+  function makeId(){
+    return `${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
+  }
+
+  // Core: uloží záznam do sdíleného API a vrátí ho i s id (pro případné zrušení)
+  async function recordPunch(projekt, typ){
+    const record = { id: makeId(), projekt, typ, timestamp: new Date().toISOString() };
+    await addRecordApi(record);
+    const records = await loadRecords();
+    renderToday(records);
+    renderSummary(records);
+    refreshProjectSuggestions(records);
+    return record;
+  }
+
+  async function punch(typ){
+    const projekt = projektInput.value.trim();
+    if(!projekt){
+      setStatus('Zadejte prosím název projektu / stavby.', '');
+      projektInput.focus();
+      return;
+    }
+    if(!getApiUrl()){
+      setStatus('Nejdřív nastav adresu API v sekci Nastavení.', '');
+      return;
+    }
+    btnIn.disabled = true;
+    btnOut.disabled = true;
+    try{
+      await recordPunch(projekt, typ);
+      setStatus(`${typ} zaznamenán pro „${projekt}“ ✓`, typ === 'Příchod' ? 'ok' : 'out');
+    }catch(e){
+      setStatus('Chyba při ukládání, zkuste to znovu.', '');
+    }finally{
+      btnIn.disabled = false;
+      btnOut.disabled = false;
+    }
+  }
+
+  btnIn.addEventListener('click', () => punch('Příchod'));
+  btnOut.addEventListener('click', () => punch('Odchod'));
+
+  // CSV export (Excel friendly, semicolon-separated, UTF-8 BOM)
+  exportBtn.addEventListener('click', async () => {
+    const records = await loadRecords();
+    if(records.length === 0){
+      setStatus('Žádná data k exportu.', '');
+      return;
+    }
+    const sorted = [...records].sort((a,b) => new Date(a.timestamp) - new Date(b.timestamp));
+    const header = ['Projekt','Typ','Datum','Čas'];
+    const rows = sorted.map(r => {
+      const d = new Date(r.timestamp);
+      const datum = `${pad(d.getDate())}.${pad(d.getMonth()+1)}.${d.getFullYear()}`;
+      const cas = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+      return [r.projekt, r.typ, datum, cas];
+    });
+    const csv = [header, ...rows]
+      .map(row => row.map(field => `"${String(field).replace(/"/g,'""')}"`).join(';'))
+      .join('\r\n');
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `dochazka_${new Date().toISOString().slice(0,10)}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  // Obecný QR kód (odkaz na stránku samotnou)
+  try{
+    new QRCode(document.getElementById('qrcode'), {
+      text: window.location.href.split('?')[0],
+      width: 150,
+      height: 150,
+      colorDark: '#1B1917',
+      colorLight: '#ffffff'
+    });
+  }catch(e){
+    document.getElementById('qrcode').innerHTML = '<div class="qr-hint">QR kód se nepodařilo vygenerovat.</div>';
+  }
+
+  // Generátor dvojice QR kódů (Příchod / Odchod) pro daný projekt
+  const genBtn = document.getElementById('genProjectQr');
+  const qrProjectInput = document.getElementById('qrProjectInput');
+  const projectQrResult = document.getElementById('projectQrResult');
+
+  genBtn.addEventListener('click', () => {
+    const name = qrProjectInput.value.trim();
+    if(!name) return;
+
+    const baseUrl = window.location.href.split('?')[0];
+    const inUrl = `${baseUrl}?projekt=${encodeURIComponent(name)}&typ=prichod`;
+    const outUrl = `${baseUrl}?projekt=${encodeURIComponent(name)}&typ=odchod`;
+
+    const qrInEl = document.getElementById('qrInCanvas');
+    const qrOutEl = document.getElementById('qrOutCanvas');
+    qrInEl.innerHTML = '';
+    qrOutEl.innerHTML = '';
+
+    new QRCode(qrInEl, { text: inUrl, width: 130, height: 130, colorDark: '#1B1917', colorLight: '#ffffff' });
+    new QRCode(qrOutEl, { text: outUrl, width: 130, height: 130, colorDark: '#1B1917', colorLight: '#ffffff' });
+
+    setTimeout(() => {
+      const c1 = qrInEl.querySelector('canvas');
+      const c2 = qrOutEl.querySelector('canvas');
+      const dlIn = document.getElementById('dlIn');
+      const dlOut = document.getElementById('dlOut');
+      if(c1){ dlIn.href = c1.toDataURL('image/png'); dlIn.download = `QR_prichod_${name}.png`; }
+      if(c2){ dlOut.href = c2.toDataURL('image/png'); dlOut.download = `QR_odchod_${name}.png`; }
+    }, 60);
+
+    projectQrResult.classList.add('show');
+  });
+
+  // ---- Zpracování naskenovaného akčního QR kódu (?projekt=X&typ=prichod|odchod) ----
+  const autoConfirm = document.getElementById('autoConfirm');
+  const autoConfirmTitle = document.getElementById('autoConfirmTitle');
+  const autoConfirmDetail = document.getElementById('autoConfirmDetail');
+  const undoBtn = document.getElementById('undoBtn');
+  let lastAutoRecordId = null;
+
+  function showAutoConfirm(typ, projekt, timestamp){
+    const cls = typ === 'Příchod' ? 'in' : 'out';
+    autoConfirm.className = `auto-confirm show ${cls}`;
+    autoConfirmTitle.textContent = `${typ} zaznamenán`;
+    const d = new Date(timestamp);
+    autoConfirmDetail.textContent = `${projekt} · ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  }
+
+  async function applyUrlAction(){
+    const params = new URLSearchParams(window.location.search);
+    const projekt = params.get('projekt');
+    const typRaw = params.get('typ');
+
+    if(projekt && (typRaw === 'prichod' || typRaw === 'odchod')){
+      const typ = typRaw === 'prichod' ? 'Příchod' : 'Odchod';
+      projektInput.value = projekt;
+
+      if(!getApiUrl()){
+        setStatus('Nejdřív nastav adresu API v sekci Nastavení, pak zkus naskenovat znovu.', '');
+        return true;
+      }
+
+      try{
+        const record = await recordPunch(projekt, typ);
+        lastAutoRecordId = record.id;
+        showAutoConfirm(typ, projekt, record.timestamp);
+      }catch(e){
+        setStatus('Chyba při ukládání záznamu z QR.', '');
+      }
+      return true;
+    }
+
+    if(projekt){
+      projektInput.value = projekt;
+      activeProjectBanner.textContent = `Naskenováno pro projekt: ${projekt}`;
+      activeProjectBanner.classList.add('show');
+    }
+    return false;
+  }
+
+  undoBtn.addEventListener('click', async () => {
+    if(!lastAutoRecordId) return;
+    try{
+      await deleteRecordApi(lastAutoRecordId);
+      const records = await loadRecords();
+      renderToday(records);
+      renderSummary(records);
+      refreshProjectSuggestions(records);
+    }catch(e){ /* ignore */ }
+    autoConfirmTitle.textContent = 'Záznam zrušen';
+    autoConfirmDetail.textContent = '';
+    undoBtn.style.display = 'none';
+    lastAutoRecordId = null;
+  });
+
+  // ---- Ovládání nastavení API adresy ----
+  const apiUrlInput = document.getElementById('apiUrl');
+  const saveApiUrlBtn = document.getElementById('saveApiUrl');
+  const apiStatus = document.getElementById('apiStatus');
+
+  apiUrlInput.value = getApiUrl();
+  if(getApiUrl()){
+    apiStatus.textContent = 'Nastaveno na tomto zařízení ✓';
+    apiStatus.className = 'status ok';
+  }
+
+  saveApiUrlBtn.addEventListener('click', async () => {
+    const url = apiUrlInput.value.trim();
+    if(!url){
+      apiStatus.textContent = 'Zadej adresu API.';
+      apiStatus.className = 'status';
+      return;
+    }
+    setApiUrl(url);
+    apiStatus.textContent = 'Ověřuji připojení…';
+    apiStatus.className = 'status';
+    try{
+      const records = await loadRecords();
+      apiStatus.textContent = `Připojeno ✓ (${records.length} záznamů v Sheetu)`;
+      apiStatus.className = 'status ok';
+      renderToday(records);
+      renderSummary(records);
+      refreshProjectSuggestions(records);
+    }catch(e){
+      apiStatus.textContent = 'Uloženo, ale připojení se nepodařilo ověřit.';
+      apiStatus.className = 'status';
+    }
+  });
+
+  // init
+  applyUrlAction();
+  refresh();
+})();
+</script>
+</body>
+</html>
