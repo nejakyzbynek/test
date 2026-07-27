@@ -1,45 +1,319 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="/Nihongo/css/style.css">
-    <title>NIHONGO</title>
-  </head>
-  <body>
-    
-<nav class="navbar navbar-expand-md navbar-light bg-light">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="/main.html">NIHONGO</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="main.html">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="match.html">Match</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="lexicon.html">Lexicon</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="dochazka.html">Dochazka</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NIHONGO</title>
+<meta name="description" content="Osobní sandbox stránek na procvičování japonštiny.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper: #FFFFFF;
+    --paper-2: #FAF9F5;
+    --ink: #121212;
+    --ink-dim: rgba(18,18,18,0.62);
+    --vermillion: #C1442D;
+    --hairline: rgba(18,18,18,0.14);
+
+    --display: "Shippori Mincho", serif;
+    --body: "Zen Kaku Gothic New", sans-serif;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--body);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  a{ color: inherit; text-decoration: none; }
+
+  /* ---------- Nav ---------- */
+  .nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding: 22px clamp(20px, 5vw, 56px);
+    position: relative;
+    z-index: 5;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 1.3rem;
+    letter-spacing: 0.08em;
+  }
+
+  /* signature hanko next to wordmark */
+  .hanko{
+    width: 30px; height: 30px;
+    border: 1.6px solid var(--vermillion);
+    border-radius: 3px;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    place-items:center;
+    transform: rotate(-6deg);
+    flex-shrink:0;
+  }
+  .hanko span{
+    color: var(--vermillion);
+    font-family: var(--body);
+    font-weight: 700;
+    font-size: 0.62rem;
+    line-height:1;
+  }
+
+  .nav-links{
+    display:flex;
+    gap: clamp(16px, 3vw, 34px);
+    list-style:none;
+    margin:0; padding:0;
+    font-size: 0.92rem;
+    letter-spacing: 0.03em;
+  }
+  .nav-links a{
+    position:relative;
+    padding-bottom: 4px;
+    color: var(--ink-dim);
+    transition: color .2s ease;
+  }
+  .nav-links a::after{
+    content:"";
+    position:absolute; left:0; bottom:0;
+    width:0; height:1px;
+    background: var(--ink);
+    transition: width .25s ease;
+  }
+  .nav-links a:hover,
+  .nav-links a:focus-visible{ color: var(--ink); }
+  .nav-links a:hover::after,
+  .nav-links a:focus-visible::after{ width:100%; }
+  .nav-links a.active{ color: var(--ink); }
+  .nav-links a.active::after{ width:100%; background: var(--vermillion); }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position: relative;
+    padding: clamp(48px, 12vh, 120px) clamp(20px, 5vw, 56px) clamp(64px, 10vh, 96px);
+    text-align:center;
+    overflow: hidden;
+  }
+  .kanji-watermark{
+    position:absolute;
+    top: 50%; left:50%;
+    transform: translate(-50%,-52%);
+    font-family: var(--display);
+    font-size: clamp(220px, 40vw, 520px);
+    font-weight: 400;
+    color: var(--ink);
+    opacity: 0.045;
+    white-space: nowrap;
+    pointer-events:none;
+    user-select:none;
+    animation: kanji-in 1.4s ease-out both;
+  }
+  @keyframes kanji-in{
+    from{ opacity:0; transform: translate(-50%,-52%) scale(0.94); }
+    to{ opacity:0.045; transform: translate(-50%,-52%) scale(1); }
+  }
+  .eyebrow{
+    font-size: 0.78rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--vermillion);
+    margin: 0 0 18px;
+  }
+  h1{
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(2.6rem, 7vw, 5rem);
+    margin: 0 0 18px;
+    letter-spacing: 0.02em;
+    position: relative;
+  }
+  .lede{
+    max-width: 46ch;
+    margin: 0 auto;
+    color: var(--ink-dim);
+    font-size: 1.02rem;
+    position: relative;
+  }
+
+  /* ---------- Cards ---------- */
+  .stage{
+    padding: 0 clamp(20px, 5vw, 56px) clamp(60px, 10vh, 110px);
+  }
+  .stage-head{
+    max-width: 980px;
+    margin: 0 auto 34px;
+    display:flex;
+    align-items:baseline;
+    justify-content: space-between;
+    gap: 16px;
+    border-bottom: 1px solid var(--hairline);
+    padding-bottom: 14px;
+  }
+  .stage-head h2{
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 1.25rem;
+    margin:0;
+  }
+  .stage-head span{
+    font-size: 0.82rem;
+    color: var(--ink-dim);
+  }
+
+  .cards{
+    max-width: 980px;
+    margin: 0 auto;
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 22px;
+  }
+
+  .card{
+    position: relative;
+    display:block;
+    background: var(--paper-2);
+    border: 1px solid var(--hairline);
+    border-radius: 3px;
+    padding: 30px 24px 26px;
+    transition: transform .35s cubic-bezier(.2,.7,.2,1), border-color .3s ease, background .3s ease;
+  }
+  .card:hover, .card:focus-visible{
+    transform: translateY(-6px);
+    border-color: var(--ink);
+    background: var(--paper);
+    outline: none;
+  }
+  .card:focus-visible{
+    box-shadow: 0 0 0 2px var(--vermillion);
+  }
+
+  .stamp{
+    width: 46px; height:46px;
+    border: 1.6px solid var(--vermillion);
+    border-radius: 6px;
+    display:flex; align-items:center; justify-content:center;
+    color: var(--vermillion);
+    font-family: var(--display);
+    font-size: 1.15rem;
+    transform: rotate(-4deg);
+    transition: transform .35s ease;
+    margin-bottom: 18px;
+  }
+  .card:hover .stamp{ transform: rotate(2deg) scale(1.06); }
+
+  .card h3{
+    font-family: var(--body);
+    font-weight: 700;
+    font-size: 1.05rem;
+    margin: 0 0 8px;
+    letter-spacing: 0.02em;
+  }
+  .card p{
+    margin:0;
+    font-size: 0.88rem;
+    color: var(--ink-dim);
+  }
+  .card .go{
+    display:inline-block;
+    margin-top: 16px;
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+  }
+  .card .go::after{ content:" →"; }
+
+  /* ---------- Footer ---------- */
+  footer{
+    padding: 26px clamp(20px, 5vw, 56px) 40px;
+    text-align:center;
+    color: var(--ink-dim);
+    font-size: 0.8rem;
+    border-top: 1px solid var(--hairline);
+  }
+  footer a{ color: var(--vermillion); }
+  footer a:hover{ color: var(--ink); }
+
+  @media (prefers-reduced-motion: reduce){
+    *, *::before, *::after{ animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="brand" href="main.html">
+    <span class="hanko" title="Zbyněk — ツビネク" aria-label="hanko pečeť Zbyněk">
+      <span>ツ</span><span>ビ</span><span>ネ</span><span>ク</span>
+    </span>
+    NIHONGO
+  </a>
+  <ul class="nav-links">
+    <li><a class="active" href="main.html">Home</a></li>
+    <li><a href="match.html">Match</a></li>
+    <li><a href="lexicon.html">Lexicon</a></li>
+    <li><a href="dochazka.html">Dochazka</a></li>
+  </ul>
 </nav>
-    
- 
 
+<section class="hero">
+  <div class="kanji-watermark">日本語</div>
+  <p class="eyebrow">個人的な練習場 — osobní sandbox</p>
+  <h1>NIHONGO</h1>
+  <p class="lede">Sbírka rozpracovaných stránek, na kterých zkouším a ladím věci kolem studia japonštiny.</p>
+</section>
 
-    
+<section class="stage">
+  <div class="stage-head">
+    <h2>Stránky</h2>
+    <span>3 nástroje</span>
+  </div>
+  <div class="cards">
 
-  
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-  </body>
+    <a class="card" href="match.html">
+      <div class="stamp">合</div>
+      <h3>Match</h3>
+      <p>Párovací cvičení na spojování slovíček a znaků.</p>
+      <span class="go">Otevřít</span>
+    </a>
+
+    <a class="card" href="lexicon.html">
+      <div class="stamp">辞</div>
+      <h3>Lexicon</h3>
+      <p>Slovník a přehled naučené slovní zásoby.</p>
+      <span class="go">Otevřít</span>
+    </a>
+
+    <a class="card" href="dochazka.html">
+      <div class="stamp">出</div>
+      <h3>Dochazka</h3>
+      <p>Sledování docházky a pravidelnosti studia.</p>
+      <span class="go">Otevřít</span>
+    </a>
+
+  </div>
+</section>
+
+<footer>
+  自分の練習用ページ · <a href="https://github.com/" target="_blank" rel="noopener">GitHub repozitář</a>
+</footer>
+
+</body>
 </html>
