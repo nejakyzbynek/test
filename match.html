@@ -1,87 +1,424 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="cs">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nihongo</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
-  <link rel="stylesheet" href="css/style.css">
-  <title>JP–CZ Matching</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NIHONGO — Match</title>
+<meta name="description" content="Párovací cvičení na spojování japonských a českých slovíček.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper: #FFFFFF;
+    --paper-2: #FAF9F5;
+    --ink: #121212;
+    --ink-dim: rgba(18,18,18,0.62);
+    --vermillion: #C1442D;
+    --vermillion-dim: rgba(193,68,45,0.14);
+    --hairline: rgba(18,18,18,0.14);
+    --correct: #2E7D46;
+    --wrong: #C1442D;
+
+    --display: "Shippori Mincho", serif;
+    --body: "Zen Kaku Gothic New", sans-serif;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--body);
+    line-height: 1.6;
+  }
+
+  a{ color: inherit; text-decoration: none; }
+
+  /* ---------- Nav (shared with main.html) ---------- */
+  .nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding: 22px clamp(20px, 5vw, 56px);
+    position: relative;
+    z-index: 5;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 1.3rem;
+    letter-spacing: 0.08em;
+  }
+  .hanko{
+    width: 30px; height: 30px;
+    border: 1.6px solid var(--vermillion);
+    border-radius: 3px;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    place-items:center;
+    transform: rotate(-6deg);
+    flex-shrink:0;
+  }
+  .hanko span{
+    color: var(--vermillion);
+    font-family: var(--body);
+    font-weight: 700;
+    font-size: 0.62rem;
+    line-height:1;
+  }
+  .nav-links{
+    display:flex;
+    gap: clamp(16px, 3vw, 34px);
+    list-style:none;
+    margin:0; padding:0;
+    font-size: 0.92rem;
+    letter-spacing: 0.03em;
+  }
+  .nav-links a{
+    position:relative;
+    padding-bottom: 4px;
+    color: var(--ink-dim);
+    transition: color .2s ease;
+  }
+  .nav-links a::after{
+    content:"";
+    position:absolute; left:0; bottom:0;
+    width:0; height:1px;
+    background: var(--ink);
+    transition: width .25s ease;
+  }
+  .nav-links a:hover,
+  .nav-links a:focus-visible{ color: var(--ink); }
+  .nav-links a:hover::after,
+  .nav-links a:focus-visible::after{ width:100%; }
+  .nav-links a.active{ color: var(--ink); }
+  .nav-links a.active::after{ width:100%; background: var(--vermillion); }
+
+  /* ---------- Page head ---------- */
+  .page-head{
+    padding: clamp(40px, 8vh, 72px) clamp(20px, 5vw, 56px) clamp(28px, 5vh, 40px);
+    text-align:center;
+  }
+  .eyebrow{
+    font-size: 0.78rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--vermillion);
+    margin: 0 0 18px;
+  }
+  h1{
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(2rem, 5vw, 3rem);
+    margin: 0;
+    letter-spacing: 0.02em;
+  }
+
+  /* ---------- Controls ---------- */
+  .controls{
+    max-width: 760px;
+    margin: 0 auto clamp(24px, 5vh, 40px);
+    padding: 0 clamp(20px, 5vw, 56px);
+    display:flex;
+    flex-wrap: wrap;
+    gap: 20px 32px;
+    align-items:flex-end;
+    justify-content:center;
+  }
+  .field{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .field label{
+    font-size: 0.74rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+  }
+  .field select{
+    appearance:none;
+    background: var(--paper-2);
+    border: 1px solid var(--hairline);
+    border-radius: 3px;
+    padding: 10px 36px 10px 14px;
+    font-family: var(--body);
+    font-size: 0.92rem;
+    color: var(--ink);
+    min-width: 190px;
+    cursor:pointer;
+    background-image: linear-gradient(45deg, transparent 50%, var(--ink-dim) 50%), linear-gradient(135deg, var(--ink-dim) 50%, transparent 50%);
+    background-position: calc(100% - 18px) calc(50% - 2px), calc(100% - 13px) calc(50% - 2px);
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+    transition: border-color .2s ease;
+  }
+  .field select:hover,
+  .field select:focus-visible{
+    border-color: var(--ink);
+    outline: none;
+  }
+
+  /* ---------- Score ---------- */
+  .score{
+    max-width: 760px;
+    margin: 0 auto clamp(32px, 6vh, 56px);
+    padding: 0 clamp(20px, 5vw, 56px);
+    display:flex;
+    justify-content:center;
+    gap: 28px;
+    font-size: 0.92rem;
+    letter-spacing: 0.02em;
+  }
+  .score .stat{
+    display:flex;
+    align-items:center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 1px solid var(--hairline);
+    border-radius: 3px;
+    background: var(--paper-2);
+  }
+  .score .stat.correct span{ color: var(--correct); font-weight:700; }
+  .score .stat.wrong span{ color: var(--wrong); font-weight:700; }
+
+  /* ---------- Game board ---------- */
+  .stage{
+    padding: 0 clamp(20px, 5vw, 56px) clamp(60px, 10vh, 100px);
+  }
+  .game{
+    max-width: 780px;
+    margin: 0 auto;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(16px, 4vw, 40px);
+  }
+  .column{
+    display:flex;
+    flex-direction:column;
+    gap: 12px;
+  }
+  /* items generated by script.js inside #left/#right */
+  .word{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    min-height: 64px;
+    background: var(--paper-2);
+    border: 1px solid var(--hairline);
+    border-radius: 3px;
+    padding: 10px 16px;
+    font-size: 0.95rem;
+    cursor:pointer;
+    transition: transform .2s ease, border-color .2s ease, background .2s ease;
+  }
+  .word:hover{
+    transform: translateY(-2px);
+    border-color: var(--ink);
+    background: var(--paper);
+  }
+  .word.jp-word .romaji{
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 1.05rem;
+  }
+  .word.jp-word .hiragana{
+    font-size: 0.78rem;
+    color: var(--ink-dim);
+    margin-top: 2px;
+  }
+  .word.selected{
+    border-color: var(--vermillion);
+    background: var(--vermillion-dim);
+  }
+  .word.correct{
+    border-color: var(--correct);
+    background: rgba(46,125,70,0.08);
+    cursor: default;
+    transform: none;
+  }
+  .word.wrong{
+    border-color: var(--wrong);
+    background: rgba(193,68,45,0.08);
+    animation: shake .3s ease;
+  }
+  @keyframes shake{
+    0%, 100%{ transform: translateX(0); }
+    25%{ transform: translateX(-4px); }
+    75%{ transform: translateX(4px); }
+  }
+
+  /* legacy step-button fallback, used only if #steps container exists */
+  #steps{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    justify-content:center;
+    margin: 0 auto clamp(20px, 4vh, 32px);
+    max-width: 780px;
+    padding: 0 clamp(20px, 5vw, 56px);
+  }
+  #steps button{
+    font-family: var(--body);
+    font-size: 0.82rem;
+    padding: 8px 16px;
+    border: 1px solid var(--hairline);
+    border-radius: 3px;
+    background: var(--paper-2);
+    color: var(--ink);
+    cursor:pointer;
+  }
+  #steps button.active-step{
+    border-color: var(--vermillion);
+    color: var(--vermillion);
+  }
+
+  @media (max-width: 560px){
+    .game{ grid-template-columns: 1fr 1fr; gap: 12px; }
+    .word{ min-height: 56px; padding: 8px 12px; font-size: 0.86rem; }
+  }
+
+  /* ---------- Actions ---------- */
+  .actions{
+    max-width: 780px;
+    margin: clamp(28px, 5vh, 44px) auto 0;
+    padding: 0 clamp(20px, 5vw, 56px);
+    display:flex;
+    justify-content:center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .btn{
+    font-family: var(--body);
+    font-weight: 700;
+    font-size: 0.86rem;
+    letter-spacing: 0.03em;
+    padding: 12px 26px;
+    border-radius: 3px;
+    border: 1px solid var(--ink);
+    background: var(--ink);
+    color: var(--paper);
+    cursor:pointer;
+    transition: transform .2s ease, background .2s ease, color .2s ease;
+  }
+  .btn:hover,
+  .btn:focus-visible{
+    transform: translateY(-2px);
+    outline: none;
+  }
+  .btn.secondary{
+    background: transparent;
+    color: var(--ink);
+  }
+  .btn.secondary:hover{
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  /* ---------- Footer ---------- */
+  footer{
+    padding: 26px clamp(20px, 5vw, 56px) 40px;
+    text-align:center;
+    color: var(--ink-dim);
+    font-size: 0.8rem;
+    border-top: 1px solid var(--hairline);
+  }
+  footer a{ color: var(--vermillion); }
+  footer a:hover{ color: var(--ink); }
+
+  @media (prefers-reduced-motion: reduce){
+    *, *::before, *::after{ animation: none !important; transition: none !important; }
+  }
+</style>
 </head>
 <body>
-<nav class="navbar navbar-expand-md navbar-light bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="main.html">NIHONGO</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="main.html">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="match.html">Match</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="lexicon.html">Lexicon</a>
-          </li>
-        </ul>
-    </div>
-  </div>
-</nav>
-<div class="container">
-  <div class="row">
-    <div class="col">
-      <h1>Spoj správná slovíčka</h1>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      <div id="lessonSelect">
-        Lekce:
-          <select onchange="changeLesson(this.value)">
-            <option value="lesson5">Lesson 5</option>
-            <option value="lesson6">Lesson 6</option>
-            <option value="lesson7">Lesson 7</option>
-            <option value="lesson8">Lesson 8</option>
-            <option value="lesson9">Lesson 9</option>
-            <option value="lesson10">Lesson 10</option>
-            <option value="tellingtime">Telling time</option>
-            <option value="hiragana">Hiragana</option>
 
-          </select>
-      </div>
-    </div>
+<nav class="nav">
+  <a class="brand" href="main.html">
+    <span class="hanko" title="Zbyněk — ツビネク" aria-label="hanko pečeť Zbyněk">
+      <span>ツ</span><span>ビ</span><span>ネ</span><span>ク</span>
+    </span>
+    NIHONGO
+  </a>
+  <ul class="nav-links">
+    <li><a href="main.html">Home</a></li>
+    <li><a class="active" aria-current="page" href="match.html">Match</a></li>
+    <li><a href="lexicon.html">Lexicon</a></li>
+    <li><a href="dochazka.html">Dochazka</a></li>
+  </ul>
+</nav>
+
+<section class="page-head">
+  <p class="eyebrow">合 — párovací cvičení</p>
+  <h1>Spoj správná slovíčka</h1>
+</section>
+
+<div class="controls">
+  <div class="field">
+    <label for="lessonSelectInput">Lekce</label>
+    <select id="lessonSelectInput" onchange="changeLesson(this.value)">
+      <option value="lesson5">Lesson 5</option>
+      <option value="lesson6">Lesson 6</option>
+      <option value="lesson7">Lesson 7</option>
+      <option value="lesson8">Lesson 8</option>
+      <option value="lesson9">Lesson 9</option>
+      <option value="lesson10">Lesson 10</option>
+      <option value="tellingtime">Telling time</option>
+      <option value="hiragana">Hiragana</option>
+    </select>
   </div>
-  <div class="row"> 
-    <div class="col">
-      <div id="stepContainer">
-        Step:
-        <select id="stepSelect" onchange="changeStep(this.value)">
-          <!-- options will be populated by script.js -->
-        </select>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col">
-        <div id="score">
-          ✅ Správně: <span id="correctCount">0</span> |
-          ❌ Špatně: <span id="wrongCount">0</span>
-        </div>
-    </div>
+  <div class="field" id="stepContainer">
+    <label for="stepSelect">Step</label>
+    <select id="stepSelect" onchange="changeStep(this.value)">
+      <!-- options will be populated by script.js -->
+    </select>
   </div>
 </div>
-<div class="game">
-  <div class="column" id="left"></div>
-  <div class="column" id="right"></div>
+
+<div class="score" id="score" aria-live="polite">
+  <div class="stat correct">✅ Správně: <span id="correctCount">0</span></div>
+  <div class="stat wrong">❌ Špatně: <span id="wrongCount">0</span></div>
 </div>
-<button class="button_novekolo" onclick="start()">🔄 Nové kolo</button>
-<button id="nextStep" style="display:none" onclick="nextStep()">
-  ▶ Další část
-</button>
+
+<section class="stage">
+  <div class="game">
+    <div class="column" id="left"></div>
+    <div class="column" id="right"></div>
+  </div>
+</section>
+
+<div class="actions">
+  <button type="button" class="btn" onclick="start()">🔄 Nové kolo</button>
+  <button type="button" class="btn secondary" id="nextStep" style="display:none" onclick="nextStep()">▶ Další část</button>
+</div>
+
+<footer>
+  自分の練習用ページ · <a href="https://github.com/" target="_blank" rel="noopener">GitHub repozitář</a>
+</footer>
+
 <script src="js/script.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Sync the "Lekce" dropdown with whatever lesson script.js actually
+  // loaded (it reads currentLesson from localStorage, so on repeat
+  // visits it may differ from the option pre-selected in the HTML).
+  document.addEventListener("DOMContentLoaded", () => {
+    const lessonInput = document.getElementById("lessonSelectInput");
+    if (lessonInput && typeof currentLesson !== "undefined") {
+      lessonInput.value = currentLesson;
+    }
+  });
+</script>
 </body>
 </html>
