@@ -505,6 +505,13 @@
   const exportBtn = document.getElementById('exportBtn');
   const activeProjectBanner = document.getElementById('activeProjectBanner');
 
+  // ============================================================
+  // Sem vlož URL svého nasazeného Apps Scriptu (končí na /exec).
+  // Když ji vyplníš, appka funguje hned po otevření na jakémkoli
+  // zařízení bez nutnosti cokoliv nastavovat v sekci Nastavení.
+  // ============================================================
+  const DEFAULT_API_URL = 'https://script.google.com/macros/s/AKfycbxidavuA9Xwnvh7A0u0UG3vibq_8i9dTZlmAa-QvBocwU66q_KluCAanx6LWJ1UhJ9F/exec'; // <-- např. 'https://script.google.com/macros/s/AKfycb.../exec'
+
   const RECORDS_KEY = 'dochazka_records_cache';
   const API_URL_KEY = 'dochazka_api_url';
 
@@ -522,7 +529,8 @@
 
   // ---- Sdílené API (Google Sheets přes Apps Script) ----
   function getApiUrl(){
-    return (localStorage.getItem(API_URL_KEY) || '').trim();
+    const stored = (localStorage.getItem(API_URL_KEY) || '').trim();
+    return stored || DEFAULT_API_URL.trim();
   }
   function setApiUrl(url){
     localStorage.setItem(API_URL_KEY, url.trim());
