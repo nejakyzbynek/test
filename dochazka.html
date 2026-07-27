@@ -229,11 +229,15 @@
     text-align:right;
     white-space:nowrap;
   }
-  .del-btn{
+  .row-actions{
+    display:flex;
+    gap:2px;
+  }
+  .del-btn, .edit-btn{
     background:transparent;
     border:none;
     color:var(--muted);
-    font-size:16px;
+    font-size:15px;
     line-height:1;
     padding:4px 6px;
     cursor:pointer;
@@ -243,6 +247,49 @@
     color:var(--danger);
     background:rgba(196,99,75,0.12);
   }
+  .edit-btn:hover, .edit-btn:active{
+    color:var(--amber);
+    background:rgba(232,163,61,0.12);
+  }
+
+  .ticket.editing{
+    display:block;
+    padding:14px 16px 16px;
+  }
+  .edit-grid{
+    display:grid;
+    grid-template-columns:1fr 1.4fr 1fr;
+    gap:8px;
+    margin-bottom:10px;
+  }
+  .edit-grid select, .edit-grid input{
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:8px 8px;
+    color:var(--cream);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:13px;
+    width:100%;
+  }
+  .edit-actions{
+    display:flex;
+    gap:8px;
+  }
+  .save-edit-btn, .cancel-edit-btn{
+    flex:1;
+    font-family:'Oswald',sans-serif;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    font-size:13px;
+    border:none;
+    border-radius:6px;
+    padding:10px 8px;
+    cursor:pointer;
+  }
+  .save-edit-btn{ background:var(--amber); color:#1B1917; }
+  .cancel-edit-btn{ background:var(--panel-2); color:var(--muted); border:1px solid var(--line); }
   .empty{
     text-align:center;
     color:var(--muted);
@@ -586,6 +633,16 @@
     });
   }
 
+  async function updateRecordApi(record){
+    const url = getApiUrl();
+    if(!url) throw new Error('Adresa API není nastavena.');
+    await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'update', ...record })
+    });
+  }
+
   function setStatus(msg, cls){
     statusEl.textContent = msg;
     statusEl.className = 'status' + (cls ? ' ' + cls : '');
@@ -602,6 +659,11 @@
     div.textContent = str;
     return div.innerHTML;
   }
+  function escapeAttr(str){
+    return escapeHtml(str).replace(/"/g, '&quot;');
+  }
+
+  let editingId = null;
 
   function renderToday(records){
     const today = records
@@ -615,12 +677,34 @@
     todayList.innerHTML = today.map(r => {
       const d = new Date(r.timestamp);
       const time = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+
+      if(r.id === editingId){
+        const timeVal = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+        return `<div class="ticket editing">
+          <div class="edit-grid">
+            <select class="edit-typ" data-id="${escapeAttr(r.id)}">
+              <option value="Příchod" ${r.typ==='Příchod' ? 'selected' : ''}>Příchod</option>
+              <option value="Odchod" ${r.typ==='Odchod' ? 'selected' : ''}>Odchod</option>
+            </select>
+            <input type="text" class="edit-projekt" value="${escapeAttr(r.projekt)}">
+            <input type="time" class="edit-time" value="${timeVal}" step="1">
+          </div>
+          <div class="edit-actions">
+            <button class="save-edit-btn" data-id="${escapeAttr(r.id)}">Uložit</button>
+            <button class="cancel-edit-btn">Zrušit</button>
+          </div>
+        </div>`;
+      }
+
       const tagClass = r.typ === 'Příchod' ? 'in' : 'out';
       return `<div class="ticket">
         <span class="tag ${tagClass}">${r.typ}</span>
         <span class="name">${escapeHtml(r.projekt)}</span>
         <span class="time">${time}</span>
-        <button class="del-btn" data-id="${escapeHtml(r.id)}" title="Smazat záznam">✕</button>
+        <span class="row-actions">
+          <button class="edit-btn" data-id="${escapeAttr(r.id)}" title="Upravit záznam">✎</button>
+          <button class="del-btn" data-id="${escapeAttr(r.id)}" title="Smazat záznam">✕</button>
+        </span>
       </div>`;
     }).join('');
   }
@@ -680,8 +764,11 @@
     </table>`;
   }
 
+  let currentRecords = [];
+
   async function refresh(){
     const records = await loadRecords();
+    currentRecords = records;
     renderToday(records);
     renderSummary(records);
     refreshProjectSuggestions(records);
@@ -702,6 +789,7 @@
     const record = { id: makeId(), projekt, typ, timestamp: new Date().toISOString() };
     await addRecordApi(record);
     const records = await loadRecords();
+    currentRecords = records;
     renderToday(records);
     renderSummary(records);
     refreshProjectSuggestions(records);
@@ -733,21 +821,78 @@
   }
 
   todayList.addEventListener('click', async (e) => {
-    const btn = e.target.closest('.del-btn');
-    if(!btn) return;
-    const id = btn.dataset.id;
-    if(!confirm('Smazat tento záznam?')) return;
-    btn.disabled = true;
-    try{
-      await deleteRecordApi(id);
-      const records = await loadRecords();
-      renderToday(records);
-      renderSummary(records);
-      refreshProjectSuggestions(records);
-      setStatus('Záznam smazán.', '');
-    }catch(e){
-      setStatus('Smazání se nezdařilo, zkus to znovu.', '');
-      btn.disabled = false;
+
+    // Zrušit editaci
+    if(e.target.closest('.cancel-edit-btn')){
+      editingId = null;
+      renderToday(currentRecords);
+      return;
+    }
+
+    // Otevřít editaci
+    const editBtn = e.target.closest('.edit-btn');
+    if(editBtn){
+      editingId = editBtn.dataset.id;
+      renderToday(currentRecords);
+      return;
+    }
+
+    // Uložit editaci
+    const saveBtn = e.target.closest('.save-edit-btn');
+    if(saveBtn){
+      const id = saveBtn.dataset.id;
+      const ticket = saveBtn.closest('.ticket');
+      const newProjekt = ticket.querySelector('.edit-projekt').value.trim();
+      const newTyp = ticket.querySelector('.edit-typ').value;
+      const newTimeStr = ticket.querySelector('.edit-time').value; // HH:MM nebo HH:MM:SS
+
+      if(!newProjekt){
+        setStatus('Projekt nesmí být prázdný.', '');
+        return;
+      }
+
+      const original = currentRecords.find(r => r.id === id);
+      if(!original) return;
+
+      const d = new Date(original.timestamp);
+      const parts = newTimeStr.split(':').map(Number);
+      d.setHours(parts[0] || 0, parts[1] || 0, parts[2] || 0, 0);
+
+      saveBtn.disabled = true;
+      try{
+        await updateRecordApi({ id, projekt: newProjekt, typ: newTyp, timestamp: d.toISOString() });
+        editingId = null;
+        const records = await loadRecords();
+        currentRecords = records;
+        renderToday(records);
+        renderSummary(records);
+        refreshProjectSuggestions(records);
+        setStatus('Záznam upraven ✓', 'ok');
+      }catch(err){
+        setStatus('Úprava se nezdařila, zkus to znovu.', '');
+        saveBtn.disabled = false;
+      }
+      return;
+    }
+
+    // Smazat záznam
+    const delBtn = e.target.closest('.del-btn');
+    if(delBtn){
+      const id = delBtn.dataset.id;
+      if(!confirm('Smazat tento záznam?')) return;
+      delBtn.disabled = true;
+      try{
+        await deleteRecordApi(id);
+        const records = await loadRecords();
+        currentRecords = records;
+        renderToday(records);
+        renderSummary(records);
+        refreshProjectSuggestions(records);
+        setStatus('Záznam smazán.', '');
+      }catch(err){
+        setStatus('Smazání se nezdařilo, zkus to znovu.', '');
+        delBtn.disabled = false;
+      }
     }
   });
 
@@ -881,6 +1026,7 @@
     try{
       await deleteRecordApi(lastAutoRecordId);
       const records = await loadRecords();
+      currentRecords = records;
       renderToday(records);
       renderSummary(records);
       refreshProjectSuggestions(records);
@@ -914,6 +1060,7 @@
     apiStatus.className = 'status';
     try{
       const records = await loadRecords();
+      currentRecords = records;
       apiStatus.textContent = `Připojeno ✓ (${records.length} záznamů v Sheetu)`;
       apiStatus.className = 'status ok';
       renderToday(records);
