@@ -189,8 +189,72 @@
     border-radius: 3px;
     background: var(--paper-2);
   }
-  .score .stat.correct span{ color: var(--correct); font-weight:700; }
-  .score .stat.wrong span{ color: var(--wrong); font-weight:700; }
+  .score .stat.time span{ font-variant-numeric: tabular-nums; font-weight:700; }
+
+  .best-time-note{
+    max-width: 760px;
+    margin: 0 auto clamp(28px, 5vh, 44px);
+    padding: 0 clamp(20px, 5vw, 56px);
+    text-align:center;
+    font-size: 0.78rem;
+    color: var(--ink-dim);
+    min-height: 1.2em;
+  }
+  .best-time-note .record{ color: var(--vermillion); font-weight:700; }
+
+  /* ---------- Round-complete stamp overlay ---------- */
+  .round-complete{
+    position: fixed;
+    inset: 0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index: 50;
+    pointer-events:none;
+  }
+  .round-complete[hidden]{ display:none; }
+  .round-complete-card{
+    background: var(--paper);
+    border: 2px solid var(--vermillion);
+    border-radius: 6px;
+    padding: 28px 48px;
+    text-align:center;
+    box-shadow: 0 16px 48px rgba(18,18,18,0.2);
+    animation: stampIn .5s cubic-bezier(.22,.9,.32,1.25) both, stampOut .35s ease 1.65s forwards;
+  }
+  .round-complete-card .kanji{
+    display:block;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 2.4rem;
+    color: var(--vermillion);
+    transform: rotate(-4deg);
+  }
+  .round-complete-card .label{
+    margin-top: 8px;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+  }
+  .round-complete-card .round-time{
+    display:block;
+    margin-top: 10px;
+    font-size: 0.86rem;
+    color: var(--ink);
+  }
+  .round-complete-card .round-time .record{
+    color: var(--vermillion);
+    font-weight: 700;
+  }
+  @keyframes stampIn{
+    0%{ opacity:0; transform: scale(1.9) rotate(-10deg); }
+    55%{ opacity:1; transform: scale(0.95) rotate(3deg); }
+    100%{ opacity:1; transform: scale(1) rotate(0deg); }
+  }
+  @keyframes stampOut{
+    to{ opacity:0; transform: scale(0.92); }
+  }
 
   /* ---------- Game board ---------- */
   .stage{
@@ -270,13 +334,16 @@
   }
   .word.wrong{
     border-color: var(--wrong);
-    background: rgba(193,68,45,0.08);
-    animation: shake .3s ease;
+    border-width: 2px;
+    background: rgba(193,68,45,0.14);
+    box-shadow: 0 0 0 3px rgba(193,68,45,0.16);
+    animation: shake .45s cubic-bezier(.36,.07,.19,.97) both;
   }
   @keyframes shake{
-    0%, 100%{ transform: translateX(0); }
-    25%{ transform: translateX(-4px); }
-    75%{ transform: translateX(4px); }
+    10%, 90%{ transform: translateX(-1px); }
+    20%, 80%{ transform: translateX(3px); }
+    30%, 50%, 70%{ transform: translateX(-6px); }
+    40%, 60%{ transform: translateX(6px); }
   }
 
   /* legacy step-button fallback, used only if #steps container exists */
@@ -347,6 +414,64 @@
     color: var(--paper);
   }
 
+  /* ---------- Stats panel ---------- */
+  .stats-panel{
+    max-width: 780px;
+    margin: clamp(24px, 4vh, 40px) auto 0;
+    padding: 0 clamp(20px, 5vw, 56px);
+  }
+  .stats-panel summary{
+    cursor:pointer;
+    list-style:none;
+    font-size: 0.86rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    padding: 12px 16px;
+    background: var(--paper-2);
+    border: 1px solid var(--hairline);
+    border-radius: 3px;
+    user-select:none;
+  }
+  .stats-panel summary::-webkit-details-marker{ display:none; }
+  .stats-panel[open] summary{
+    border-radius: 3px 3px 0 0;
+    border-bottom-color: transparent;
+  }
+  .stats-table{
+    width:100%;
+    border-collapse: collapse;
+    border: 1px solid var(--hairline);
+    border-top: none;
+    font-size: 0.86rem;
+  }
+  .stats-table th, .stats-table td{
+    padding: 10px 14px;
+    text-align:left;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .stats-table th{
+    color: var(--ink-dim);
+    font-weight: 600;
+    font-size: 0.74rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: var(--paper-2);
+  }
+  .stats-table tr:last-child td{ border-bottom:none; }
+  .stats-table td.num{ font-variant-numeric: tabular-nums; }
+  .stats-reset{
+    display:block;
+    margin: 12px 0 0 auto;
+    background: none;
+    border: none;
+    color: var(--ink-dim);
+    font-size: 0.76rem;
+    text-decoration: underline;
+    cursor:pointer;
+    padding: 4px;
+  }
+  .stats-reset:hover{ color: var(--vermillion); }
+
   /* ---------- Footer ---------- */
   footer{
     padding: 26px clamp(20px, 5vw, 56px) 40px;
@@ -407,10 +532,10 @@
   </div>
 </div>
 
-<div class="score" id="score" aria-live="polite">
-  <div class="stat correct">✅ Správně: <span id="correctCount">0</span></div>
-  <div class="stat wrong">❌ Špatně: <span id="wrongCount">0</span></div>
+<div class="score" id="score">
+  <div class="stat time">⏱ <span id="timeDisplay">0:00.0</span></div>
 </div>
+<div class="best-time-note" id="bestTimeNote"></div>
 
 <section class="stage">
   <div class="game">
@@ -424,11 +549,36 @@
   <button type="button" class="btn secondary" id="nextStep" style="display:none" onclick="nextStep()">▶ Další část</button>
 </div>
 
+<div class="round-complete" id="roundComplete" hidden>
+  <div class="round-complete-card">
+    <span class="kanji">合格</span>
+    <span class="label">Kolo dokončeno</span>
+    <span class="round-time" id="roundTimeNote"></span>
+  </div>
+</div>
+
+<details class="stats-panel" id="statsPanel">
+  <summary>📊 Statistiky napříč lekcemi</summary>
+  <table class="stats-table">
+    <thead>
+      <tr>
+        <th>Lekce</th>
+        <th>✅</th>
+        <th>❌</th>
+        <th>Úspěšnost</th>
+        <th>Nejlepší čas</th>
+      </tr>
+    </thead>
+    <tbody id="statsTableBody"></tbody>
+  </table>
+  <button type="button" class="stats-reset" id="statsReset">Vymazat statistiky</button>
+</details>
+
 <footer>
   自分の練習用ページ · <a href="https://github.com/" target="_blank" rel="noopener">GitHub repozitář</a>
 </footer>
 
-<script src="js/script.js"></script>
+<script src="js/script.js."></script>
 <script>
   // Sync the "Lekce" dropdown with whatever lesson script.js actually
   // loaded (it reads currentLesson from localStorage, so on repeat
